@@ -131,8 +131,8 @@ const personal = [
 				font-family: "Recursive", ui-sans-serif, system-ui, sans-serif;
 				font-variation-settings: "wght" 380, "MONO" 0, "CASL" 0;
 				font-size: 16px;
-				line-height: 1.4;
-				padding: 1.25rem 1.25rem 4rem;
+				line-height: 1.55;
+				padding: 2.5rem 2rem 6rem;
 			}
 
 			a {
@@ -146,8 +146,8 @@ const personal = [
 				justify-content: space-between;
 				align-items: baseline;
 				border-bottom: 1px solid var(--line);
-				padding-bottom: 0.75rem;
-				margin-bottom: 2.5rem;
+				padding-bottom: 1.25rem;
+				margin-bottom: 4.5rem;
 				font-size: 0.8rem;
 				letter-spacing: 0.02em;
 			}
@@ -179,13 +179,13 @@ const personal = [
 
 			.hero {
 				max-width: 46rem;
-				margin-bottom: 3.5rem;
+				margin-bottom: 6rem;
 			}
 
 			.hero-line {
 				font-size: clamp(1.7rem, 5vw, 2.6rem);
 				line-height: 1.15;
-				margin: 0 0 1.25rem;
+				margin: 0 0 2rem;
 				font-variation-settings: "wght" 500;
 			}
 
@@ -195,14 +195,14 @@ const personal = [
 				background: var(--bg);
 				color: var(--fg);
 				border: 1px solid var(--line);
-				padding: 0 0.4rem;
+				padding: 0.15rem 0.5rem;
 				appearance: auto;
 				max-width: 100%;
 			}
 
 			.tagline {
 				font-size: 1.05rem;
-				margin: 0 0 0.75rem;
+				margin: 0 0 1.1rem;
 			}
 
 			.subline {
@@ -216,13 +216,13 @@ const personal = [
 				text-transform: uppercase;
 				letter-spacing: 0.06em;
 				font-variation-settings: "wght" 700, "MONO" 1;
-				margin: 0 0 1rem;
+				margin: 0 0 2rem;
 				border-top: 1px solid var(--line);
-				padding-top: 0.5rem;
+				padding-top: 1rem;
 			}
 
 			section {
-				margin-bottom: 3rem;
+				margin-bottom: 5.5rem;
 			}
 
 			.latest p {
@@ -235,26 +235,34 @@ const personal = [
 				flex-direction: column;
 			}
 
-			details.case {
-				border-bottom: 1px solid var(--line);
-			}
-
-			details.case:first-child {
+			.case-row {
+				font: inherit;
+				color: inherit;
+				background: none;
+				border: none;
 				border-top: 1px solid var(--line);
-			}
-
-			details.case summary {
-				cursor: pointer;
-				padding: 0.85rem 0;
+				text-align: left;
+				width: 100%;
+				padding: 1.5rem 0;
+				cursor: zoom-in;
 				display: grid;
 				grid-template-columns: 2.5rem 1fr auto;
 				gap: 0.75rem;
 				align-items: baseline;
-				list-style: none;
 			}
 
-			details.case summary::-webkit-details-marker {
-				display: none;
+			.case-list .case-row:last-child {
+				border-bottom: 1px solid var(--line);
+			}
+
+			.case-row:hover .case-title {
+				text-decoration: underline;
+				text-underline-offset: 3px;
+			}
+
+			.case-row:focus-visible {
+				outline: 1px dashed var(--line);
+				outline-offset: 4px;
 			}
 
 			.case-no {
@@ -277,32 +285,7 @@ const personal = [
 				grid-column: 2 / 4;
 				color: var(--muted);
 				font-size: 0.9rem;
-				margin-top: 0.15rem;
-			}
-
-			details.case[open] summary .case-summary {
-				display: none;
-			}
-
-			.case-body {
-				display: grid;
-				grid-template-columns: 2.5rem 1fr;
-				gap: 0.75rem 1rem;
-				padding-bottom: 1.25rem;
-			}
-
-			.case-body img {
-				grid-column: 1 / 3;
-				width: 100%;
-				max-width: 20rem;
-				display: block;
-				margin: 0 0 0.5rem;
-			}
-
-			.case-body p {
-				grid-column: 2;
-				max-width: 38rem;
-				margin: 0;
+				margin-top: 0.4rem;
 			}
 
 			table.listing {
@@ -318,12 +301,12 @@ const personal = [
 				letter-spacing: 0.05em;
 				font-variation-settings: "wght" 700, "MONO" 1;
 				border-bottom: 1px solid var(--line);
-				padding: 0 0.5rem 0.4rem 0;
+				padding: 0 0.75rem 0.75rem 0;
 			}
 
 			table.listing td {
 				border-bottom: 1px solid var(--line);
-				padding: 0.6rem 0.5rem 0.6rem 0;
+				padding: 1.25rem 0.75rem 1.25rem 0;
 				vertical-align: top;
 			}
 
@@ -351,13 +334,121 @@ const personal = [
 
 			footer {
 				border-top: 1px solid var(--line);
-				padding-top: 0.75rem;
-				margin-top: 3rem;
+				padding-top: 1rem;
+				margin-top: 4rem;
 				font-size: 0.8rem;
 				color: var(--muted);
 				display: flex;
 				justify-content: space-between;
 			}
+
+			/* Case study window */
+			dialog.win {
+				position: fixed;
+				margin: 0;
+				padding: 0;
+				top: 10vh;
+				left: 50%;
+				border: 1px solid var(--line);
+				background: var(--bg);
+				color: var(--fg);
+				width: min(38rem, 90vw);
+				height: min(26rem, 78vh);
+				min-width: 18rem;
+				min-height: 10rem;
+				max-width: 96vw;
+				max-height: 92vh;
+				box-shadow: none;
+				border-radius: 0;
+				display: flex;
+				flex-direction: column;
+				overflow: hidden;
+			}
+
+			dialog.win::backdrop {
+				background: transparent;
+			}
+
+			dialog.win:not([open]) {
+				display: none;
+			}
+
+			.win-titlebar {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				border-bottom: 1px solid var(--line);
+				padding: 0.5rem 0.75rem;
+				cursor: move;
+				user-select: none;
+				font-variation-settings: "MONO" 1, "wght" 700;
+				font-size: 0.75rem;
+				letter-spacing: 0.03em;
+				text-transform: uppercase;
+				flex: 0 0 auto;
+			}
+
+			.win-controls {
+				display: flex;
+				gap: 0.4rem;
+				flex: 0 0 auto;
+			}
+
+			.win-controls button {
+				font: inherit;
+				font-size: 0.8rem;
+				background: none;
+				border: 1px solid var(--line);
+				color: inherit;
+				width: 1.5rem;
+				height: 1.5rem;
+				line-height: 1;
+				cursor: pointer;
+				padding: 0;
+			}
+
+			.win-controls button:hover {
+				background: var(--fg);
+				color: var(--bg);
+			}
+
+			.win-body {
+				padding: 1.5rem 1.75rem;
+				overflow: auto;
+				flex: 1;
+			}
+
+			.win-tag {
+				font-variation-settings: "MONO" 1;
+				font-size: 0.8rem;
+				color: var(--muted);
+				display: block;
+				margin-bottom: 1rem;
+			}
+
+			.win-body img {
+				width: 100%;
+				max-width: 22rem;
+				display: block;
+				margin-bottom: 1rem;
+			}
+
+			.win-body p {
+				margin: 0;
+			}
+
+			.resize-handle {
+				position: absolute;
+			}
+
+			.rh-n { top: -3px; left: 6px; right: 6px; height: 6px; cursor: ns-resize; }
+			.rh-s { bottom: -3px; left: 6px; right: 6px; height: 6px; cursor: ns-resize; }
+			.rh-e { top: 6px; bottom: 6px; right: -3px; width: 6px; cursor: ew-resize; }
+			.rh-w { top: 6px; bottom: 6px; left: -3px; width: 6px; cursor: ew-resize; }
+			.rh-ne { top: -3px; right: -3px; width: 10px; height: 10px; cursor: nesw-resize; }
+			.rh-nw { top: -3px; left: -3px; width: 10px; height: 10px; cursor: nwse-resize; }
+			.rh-se { bottom: -3px; right: -3px; width: 10px; height: 10px; cursor: nwse-resize; }
+			.rh-sw { bottom: -3px; left: -3px; width: 10px; height: 10px; cursor: nesw-resize; }
 
 			@media (prefers-reduced-motion: reduce) {
 				* {
@@ -402,19 +493,13 @@ const personal = [
 		<section class="case-studies">
 			<h2 class="section-label">Case studies</h2>
 			<div class="case-list">
-				{caseStudies.map((c) => (
-					<details class="case">
-						<summary>
-							<span class="case-no">{c.no}</span>
-							<span class="case-title">{c.title}</span>
-							<span class="case-tag">{c.tag}</span>
-							<span class="case-summary">{c.summary}</span>
-						</summary>
-						<div class="case-body">
-							<img src={c.img} alt={c.title} />
-							<p>{c.body}</p>
-						</div>
-					</details>
+				{caseStudies.map((c, i) => (
+					<button type="button" class="case-row" data-case-index={i}>
+						<span class="case-no">{c.no}</span>
+						<span class="case-title">{c.title}</span>
+						<span class="case-tag">{c.tag}</span>
+						<span class="case-summary">{c.summary}</span>
+					</button>
 				))}
 			</div>
 		</section>
@@ -468,7 +553,30 @@ const personal = [
 			<span>Built by Fraser Page</span>
 		</footer>
 
-		<script>
+		<dialog class="win" id="case-window">
+			<div class="win-titlebar" id="win-titlebar">
+				<span id="win-title">Case study</span>
+				<div class="win-controls">
+					<button type="button" id="win-maximize" aria-label="Maximize">&#9744;</button>
+					<button type="button" id="win-close" aria-label="Close">&times;</button>
+				</div>
+			</div>
+			<div class="win-body">
+				<span class="win-tag" id="win-tag"></span>
+				<img id="win-img" alt="" />
+				<p id="win-copy"></p>
+			</div>
+			<div class="resize-handle rh-n" data-dir="n"></div>
+			<div class="resize-handle rh-s" data-dir="s"></div>
+			<div class="resize-handle rh-e" data-dir="e"></div>
+			<div class="resize-handle rh-w" data-dir="w"></div>
+			<div class="resize-handle rh-ne" data-dir="ne"></div>
+			<div class="resize-handle rh-nw" data-dir="nw"></div>
+			<div class="resize-handle rh-se" data-dir="se"></div>
+			<div class="resize-handle rh-sw" data-dir="sw"></div>
+		</dialog>
+
+		<script define:vars={{ caseStudies }}>
 			const traitSelect = document.getElementById("trait-select");
 			const roleSelect = document.getElementById("role-select");
 
@@ -490,7 +598,7 @@ const personal = [
 			} catch (e) {}
 
 			const root = document.documentElement;
-			const buttons = document.querySelectorAll("[data-theme-choice]");
+			const themeButtons = document.querySelectorAll("[data-theme-choice]");
 
 			function applyTheme(mode) {
 				if (mode === "light" || mode === "dark") {
@@ -498,7 +606,7 @@ const personal = [
 				} else {
 					root.removeAttribute("data-theme");
 				}
-				buttons.forEach((b) => {
+				themeButtons.forEach((b) => {
 					b.setAttribute("aria-current", String(b.getAttribute("data-theme-choice") === mode));
 				});
 				try {
@@ -506,7 +614,7 @@ const personal = [
 				} catch (e) {}
 			}
 
-			buttons.forEach((b) => {
+			themeButtons.forEach((b) => {
 				b.addEventListener("click", () => applyTheme(b.getAttribute("data-theme-choice")));
 			});
 
@@ -514,6 +622,127 @@ const personal = [
 				const savedTheme = localStorage.getItem("fp:theme");
 				if (savedTheme) applyTheme(savedTheme);
 			} catch (e) {}
+
+			// Case study window
+			const win = document.getElementById("case-window");
+			const titlebar = document.getElementById("win-titlebar");
+			const maximizeBtn = document.getElementById("win-maximize");
+			const closeBtn = document.getElementById("win-close");
+			const winTitle = document.getElementById("win-title");
+			const winTag = document.getElementById("win-tag");
+			const winImg = document.getElementById("win-img");
+			const winCopy = document.getElementById("win-copy");
+
+			let restoreRect = null;
+
+			function openCase(index) {
+				const c = caseStudies[index];
+				winTitle.textContent = c.no + " — " + c.title;
+				winTag.textContent = c.tag;
+				winImg.src = c.img;
+				winImg.alt = c.title;
+				winCopy.textContent = c.body;
+				win.classList.remove("maximized");
+
+				const w = Math.min(608, window.innerWidth * 0.9);
+				const h = Math.min(416, window.innerHeight * 0.78);
+				win.style.width = w + "px";
+				win.style.height = h + "px";
+				win.style.left = (window.innerWidth - w) / 2 + "px";
+				win.style.top = Math.max(24, (window.innerHeight - h) / 2) + "px";
+
+				if (!win.open) win.showModal();
+			}
+
+			document.querySelectorAll(".case-row").forEach((row) => {
+				row.addEventListener("click", () => openCase(Number(row.dataset.caseIndex)));
+			});
+
+			closeBtn.addEventListener("click", () => win.close());
+
+			maximizeBtn.addEventListener("click", () => {
+				if (!restoreRect) {
+					restoreRect = {
+						top: win.style.top,
+						left: win.style.left,
+						width: win.style.width,
+						height: win.style.height,
+					};
+					win.style.top = "3vh";
+					win.style.left = "3vw";
+					win.style.width = "94vw";
+					win.style.height = "94vh";
+				} else {
+					win.style.top = restoreRect.top;
+					win.style.left = restoreRect.left;
+					win.style.width = restoreRect.width;
+					win.style.height = restoreRect.height;
+					restoreRect = null;
+				}
+			});
+
+			win.addEventListener("close", () => {
+				restoreRect = null;
+			});
+
+			// Drag to move via titlebar
+			titlebar.addEventListener("pointerdown", (e) => {
+				if (e.target.closest("button")) return;
+				const startX = e.clientX;
+				const startY = e.clientY;
+				const startTop = win.offsetTop;
+				const startLeft = win.offsetLeft;
+				restoreRect = null;
+
+				function onMove(ev) {
+					win.style.left = startLeft + (ev.clientX - startX) + "px";
+					win.style.top = Math.max(0, startTop + (ev.clientY - startY)) + "px";
+				}
+				function onUp() {
+					document.removeEventListener("pointermove", onMove);
+					document.removeEventListener("pointerup", onUp);
+				}
+				document.addEventListener("pointermove", onMove);
+				document.addEventListener("pointerup", onUp);
+			});
+
+			// Resize via edge/corner handles
+			document.querySelectorAll(".resize-handle").forEach((handle) => {
+				handle.addEventListener("pointerdown", (e) => {
+					e.preventDefault();
+					const dir = handle.dataset.dir;
+					const startX = e.clientX;
+					const startY = e.clientY;
+					const startW = win.offsetWidth;
+					const startH = win.offsetHeight;
+					const startTop = win.offsetTop;
+					const startLeft = win.offsetLeft;
+					restoreRect = null;
+
+					function onMove(ev) {
+						const dx = ev.clientX - startX;
+						const dy = ev.clientY - startY;
+						if (dir.includes("e")) win.style.width = Math.max(288, startW + dx) + "px";
+						if (dir.includes("s")) win.style.height = Math.max(160, startH + dy) + "px";
+						if (dir.includes("w")) {
+							const nw = Math.max(288, startW - dx);
+							win.style.width = nw + "px";
+							win.style.left = startLeft + (startW - nw) + "px";
+						}
+						if (dir.includes("n")) {
+							const nh = Math.max(160, startH - dy);
+							win.style.height = nh + "px";
+							win.style.top = startTop + (startH - nh) + "px";
+						}
+					}
+					function onUp() {
+						document.removeEventListener("pointermove", onMove);
+						document.removeEventListener("pointerup", onUp);
+					}
+					document.addEventListener("pointermove", onMove);
+					document.addEventListener("pointerup", onUp);
+				});
+			});
 		</script>
 	</body>
 </html>
