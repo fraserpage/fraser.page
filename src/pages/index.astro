@@ -1,17 +1,519 @@
 ---
+const traits = ["Creative", "Product-minded", "Thoughtful", "Data-driven", "AI-native"];
+const roles = ["developer", "builder", "engineer"];
 
+const caseStudies = [
+  {
+    no: "01",
+    title: "Data Requests",
+    tag: "AI tool design",
+    summary: "Students submit data changes as diffs; advisers approve before merge.",
+    body: "First attempt gave the AI agent the backend's own data shape as its tool interface. Testing showed it conflating things it shouldn't — application status with data-submission status. The fix: tools need their own shape, not the backend's. Simplified the surface to only what the agent and student actually need to know.",
+    img: "/images/grace.jpg",
+  },
+  {
+    no: "02",
+    title: "Smart Interaction",
+    tag: "Feature craft",
+    summary: "A vague brief — “make interaction-logging better.”",
+    body: "Usage data showed advisers batching entries, reopening the same form over and over. Built for three habits at once: extended bulk-import to fully support interactions via a table view; a “keep window open” toggle for dialog-flow advisers; and AI smart-fill from notes for single entry — reading adviser docs baked into the agent, filtered to exclude student names, on the fastest model that held up under testing.",
+    img: "/images/grace.jpg",
+  },
+  {
+    no: "03",
+    title: "Tasks system",
+    tag: "Greenfield",
+    summary: "A new student portal needed “tasks” — nobody could define what that meant.",
+    body: "Client couldn't articulate it, the designer lacked workflow context. Reasoning: the platform's job is data collection, so tasks should represent journey steps completed by updating data, not a checklist disconnected from it. Built v1 hardcoded, shaped to expose the existing filtering tools as a config screen later.",
+    img: "/images/grace.jpg",
+  },
+  {
+    no: "04",
+    title: "Scripts to prompts",
+    tag: "Strategic reframe",
+    summary: "Brief: replace a clunky, expensive external SMS platform.",
+    body: "The client was stuck thinking in “scripts.” Reframed to AI-driven “prompts” triggered by live student data changes — not just fulfilling the brief as given.",
+    img: "/images/grace.jpg",
+  },
+];
+
+const heritage = [
+  {
+    img: "/images/translash.jpeg",
+    title: "TransLash",
+    year: "2024",
+    detail: "Lead developer on a bold new site designed by Alix Hopfengaertner-Vigneault and Kaila Jacques. 2025 Webby Award. Legislation-tracking dashboard pulling daily from an external API into interactive D3 charts.",
+    link: "https://translash.org/",
+  },
+  {
+    img: "/images/acumen.jpg",
+    title: "Acumen",
+    year: "2023",
+    detail: "Custom WordPress REST API and a multi-component Vue.js map app for global programs and portfolio companies.",
+    link: "https://acumen.org/where-we-work/",
+  },
+  {
+    img: "/images/artsmidwest.jpeg",
+    title: "Arts Midwest",
+    year: "2023",
+    detail: "Award-winning site; custom REST API powering an interactive SVG grantee-impact map.",
+    link: "https://artsmidwest.org/impact/",
+  },
+];
+
+const personal = [
+  {
+    img: "/images/wedding.png",
+    title: "Wedding RSVP",
+    detail: "A playful RSVP site for my own wedding — save-as-you-go forms, custom guest links, a heart you can shoot an arrow through to make us kiss.",
+    link: "https://kasia-fraser.love/rsvp/v4jXBVDBjTyz7YDY9vDxVjmm",
+  },
+  {
+    img: "/images/spf.jpeg",
+    title: "Chart labels that don't overlap",
+    detail: "When Chart.js couldn't place doughnut-chart labels without overlap, I wrote the placement geometry myself.",
+    link: "https://helpstpauls.com/annual-report/#by-the-numbers",
+  },
+];
 ---
 
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>Fraser Page</title>
+		<style>
+			@font-face {
+				font-family: "Recursive";
+				font-style: normal;
+				font-weight: 300 1000;
+				font-display: swap;
+				src: url("/fonts/recursive-latin.woff2") format("woff2");
+			}
+
+			:root {
+				--bg: #ffffff;
+				--fg: #111111;
+				--muted: #5a5a5a;
+				--line: #111111;
+			}
+
+			:root[data-theme="dark"] {
+				--bg: #111111;
+				--fg: #f0f0f0;
+				--muted: #a3a3a3;
+				--line: #f0f0f0;
+			}
+
+			@media (prefers-color-scheme: dark) {
+				:root:not([data-theme="light"]) {
+					--bg: #111111;
+					--fg: #f0f0f0;
+					--muted: #a3a3a3;
+					--line: #f0f0f0;
+				}
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			html,
+			body {
+				margin: 0;
+				background: var(--bg);
+				color: var(--fg);
+			}
+
+			body {
+				font-family: "Recursive", ui-sans-serif, system-ui, sans-serif;
+				font-variation-settings: "wght" 380, "MONO" 0, "CASL" 0;
+				font-size: 16px;
+				line-height: 1.4;
+				padding: 1.25rem 1.25rem 4rem;
+			}
+
+			a {
+				color: inherit;
+				text-decoration: underline;
+				text-underline-offset: 2px;
+			}
+
+			.topbar {
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+				border-bottom: 1px solid var(--line);
+				padding-bottom: 0.75rem;
+				margin-bottom: 2.5rem;
+				font-size: 0.8rem;
+				letter-spacing: 0.02em;
+			}
+
+			.topbar-name {
+				font-variation-settings: "wght" 700;
+			}
+
+			.theme-links button {
+				font: inherit;
+				background: none;
+				border: none;
+				color: inherit;
+				cursor: pointer;
+				padding: 0;
+				text-decoration: underline;
+				text-underline-offset: 2px;
+			}
+
+			.theme-links .sep {
+				margin: 0 0.35rem;
+				color: var(--muted);
+			}
+
+			.theme-links button[aria-current="true"] {
+				text-decoration: none;
+				font-variation-settings: "wght" 700;
+			}
+
+			.hero {
+				max-width: 46rem;
+				margin-bottom: 3.5rem;
+			}
+
+			.hero-line {
+				font-size: clamp(1.7rem, 5vw, 2.6rem);
+				line-height: 1.15;
+				margin: 0 0 1.25rem;
+				font-variation-settings: "wght" 500;
+			}
+
+			.hero-line select {
+				font: inherit;
+				font-variation-settings: "wght" 500;
+				background: var(--bg);
+				color: var(--fg);
+				border: 1px solid var(--line);
+				padding: 0 0.4rem;
+				appearance: auto;
+				max-width: 100%;
+			}
+
+			.tagline {
+				font-size: 1.05rem;
+				margin: 0 0 0.75rem;
+			}
+
+			.subline {
+				color: var(--muted);
+				max-width: 34rem;
+				margin: 0;
+			}
+
+			h2.section-label {
+				font-size: 0.8rem;
+				text-transform: uppercase;
+				letter-spacing: 0.06em;
+				font-variation-settings: "wght" 700, "MONO" 1;
+				margin: 0 0 1rem;
+				border-top: 1px solid var(--line);
+				padding-top: 0.5rem;
+			}
+
+			section {
+				margin-bottom: 3rem;
+			}
+
+			.latest p {
+				max-width: 42rem;
+				margin: 0;
+			}
+
+			.case-list {
+				display: flex;
+				flex-direction: column;
+			}
+
+			details.case {
+				border-bottom: 1px solid var(--line);
+			}
+
+			details.case:first-child {
+				border-top: 1px solid var(--line);
+			}
+
+			details.case summary {
+				cursor: pointer;
+				padding: 0.85rem 0;
+				display: grid;
+				grid-template-columns: 2.5rem 1fr auto;
+				gap: 0.75rem;
+				align-items: baseline;
+				list-style: none;
+			}
+
+			details.case summary::-webkit-details-marker {
+				display: none;
+			}
+
+			.case-no {
+				font-variation-settings: "MONO" 1;
+				color: var(--muted);
+			}
+
+			.case-title {
+				font-variation-settings: "wght" 600;
+			}
+
+			.case-tag {
+				font-variation-settings: "MONO" 1;
+				font-size: 0.8rem;
+				color: var(--muted);
+				white-space: nowrap;
+			}
+
+			.case-summary {
+				grid-column: 2 / 4;
+				color: var(--muted);
+				font-size: 0.9rem;
+				margin-top: 0.15rem;
+			}
+
+			details.case[open] summary .case-summary {
+				display: none;
+			}
+
+			.case-body {
+				display: grid;
+				grid-template-columns: 2.5rem 1fr;
+				gap: 0.75rem 1rem;
+				padding-bottom: 1.25rem;
+			}
+
+			.case-body img {
+				grid-column: 1 / 3;
+				width: 100%;
+				max-width: 20rem;
+				display: block;
+				margin: 0 0 0.5rem;
+			}
+
+			.case-body p {
+				grid-column: 2;
+				max-width: 38rem;
+				margin: 0;
+			}
+
+			table.listing {
+				width: 100%;
+				border-collapse: collapse;
+				font-size: 0.9rem;
+			}
+
+			table.listing th {
+				text-align: left;
+				font-size: 0.75rem;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				font-variation-settings: "wght" 700, "MONO" 1;
+				border-bottom: 1px solid var(--line);
+				padding: 0 0.5rem 0.4rem 0;
+			}
+
+			table.listing td {
+				border-bottom: 1px solid var(--line);
+				padding: 0.6rem 0.5rem 0.6rem 0;
+				vertical-align: top;
+			}
+
+			table.listing img {
+				width: 3.5rem;
+				height: 3.5rem;
+				object-fit: cover;
+				display: block;
+			}
+
+			table.listing td.detail {
+				color: var(--muted);
+				max-width: 30rem;
+			}
+
+			table.listing td.year {
+				font-variation-settings: "MONO" 1;
+				color: var(--muted);
+				white-space: nowrap;
+			}
+
+			.close p {
+				max-width: 36rem;
+			}
+
+			footer {
+				border-top: 1px solid var(--line);
+				padding-top: 0.75rem;
+				margin-top: 3rem;
+				font-size: 0.8rem;
+				color: var(--muted);
+				display: flex;
+				justify-content: space-between;
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				* {
+					transition: none !important;
+				}
+			}
+		</style>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<div class="topbar">
+			<span class="topbar-name">Fraser Page</span>
+			<span class="theme-links" id="theme-links">
+				<button type="button" data-theme-choice="light" aria-current="false">Light</button>
+				<span class="sep">/</span>
+				<button type="button" data-theme-choice="dark" aria-current="false">Dark</button>
+			</span>
+		</div>
+
+		<div class="hero">
+			<p class="hero-line">
+				<select id="trait-select" aria-label="Choose a trait">
+					{traits.map((t, i) => (
+						<option value={t} selected={i === 0}>{t}</option>
+					))}
+				</select>
+				{" "}
+				<select id="role-select" aria-label="Choose a role">
+					{roles.map((r, i) => (
+						<option value={r} selected={i === 0}>{r}</option>
+					))}
+				</select>
+			</p>
+			<p class="tagline">Throw me your fuzziest briefs. (What? No, not underpants.)</p>
+			<p class="subline">I start with the data, not assumptions, then build the elegant version, front to back.</p>
+		</div>
+
+		<section class="latest">
+			<h2 class="section-label">Latest</h2>
+			<p>Most recently, I led development on Grace, an AI-native platform advisers use to support hundreds of thousands of students nationally through the college application process &mdash; hundreds of advisers use it day to day. Built for a client with no in-house product team, working alongside Springloaded's design team on everything from a greenfield student portal to an AI assistant to the adviser tools below.</p>
+		</section>
+
+		<section class="case-studies">
+			<h2 class="section-label">Case studies</h2>
+			<div class="case-list">
+				{caseStudies.map((c) => (
+					<details class="case">
+						<summary>
+							<span class="case-no">{c.no}</span>
+							<span class="case-title">{c.title}</span>
+							<span class="case-tag">{c.tag}</span>
+							<span class="case-summary">{c.summary}</span>
+						</summary>
+						<div class="case-body">
+							<img src={c.img} alt={c.title} />
+							<p>{c.body}</p>
+						</div>
+					</details>
+				))}
+			</div>
+		</section>
+
+		<section class="heritage">
+			<h2 class="section-label">Heritage</h2>
+			<table class="listing">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Project</th>
+						<th>Detail</th>
+						<th>Year</th>
+					</tr>
+				</thead>
+				<tbody>
+					{heritage.map((h) => (
+						<tr>
+							<td><img src={h.img} alt={h.title} /></td>
+							<td><a href={h.link} target="_blank" rel="noopener noreferrer">{h.title}</a></td>
+							<td class="detail">{h.detail}</td>
+							<td class="year">{h.year}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</section>
+
+		<section class="personal">
+			<h2 class="section-label">Craft &amp; experiments</h2>
+			<table class="listing">
+				<tbody>
+					{personal.map((p) => (
+						<tr>
+							<td><img src={p.img} alt={p.title} /></td>
+							<td><a href={p.link} target="_blank" rel="noopener noreferrer">{p.title}</a></td>
+							<td class="detail">{p.detail}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</section>
+
+		<section class="close">
+			<h2 class="section-label">Get in touch</h2>
+			<p>I'm looking for a team that cares as much about the decision as the delivery &mdash; where design carries real weight, and there's room to grow past &ldquo;developer.&rdquo; If that sounds like your team: <a href="mailto:fp@fraser.page">fp@fraser.page</a></p>
+		</section>
+
+		<footer>
+			<span>Toronto, Canada (Remote)</span>
+			<span>Built by Fraser Page</span>
+		</footer>
+
+		<script>
+			const traitSelect = document.getElementById("trait-select");
+			const roleSelect = document.getElementById("role-select");
+
+			function persistHeadline() {
+				try {
+					localStorage.setItem("fp:trait", traitSelect.value);
+					localStorage.setItem("fp:role", roleSelect.value);
+				} catch (e) {}
+			}
+
+			traitSelect?.addEventListener("change", persistHeadline);
+			roleSelect?.addEventListener("change", persistHeadline);
+
+			try {
+				const savedTrait = localStorage.getItem("fp:trait");
+				const savedRole = localStorage.getItem("fp:role");
+				if (savedTrait) traitSelect.value = savedTrait;
+				if (savedRole) roleSelect.value = savedRole;
+			} catch (e) {}
+
+			const root = document.documentElement;
+			const buttons = document.querySelectorAll("[data-theme-choice]");
+
+			function applyTheme(mode) {
+				if (mode === "light" || mode === "dark") {
+					root.setAttribute("data-theme", mode);
+				} else {
+					root.removeAttribute("data-theme");
+				}
+				buttons.forEach((b) => {
+					b.setAttribute("aria-current", String(b.getAttribute("data-theme-choice") === mode));
+				});
+				try {
+					localStorage.setItem("fp:theme", mode);
+				} catch (e) {}
+			}
+
+			buttons.forEach((b) => {
+				b.addEventListener("click", () => applyTheme(b.getAttribute("data-theme-choice")));
+			});
+
+			try {
+				const savedTheme = localStorage.getItem("fp:theme");
+				if (savedTheme) applyTheme(savedTheme);
+			} catch (e) {}
+		</script>
 	</body>
 </html>
