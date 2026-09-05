@@ -15,7 +15,7 @@ Fraser: a dev who jumps at the opportunity to be impactful. a dev who gets it to
 Latest: 
 At: Springloaded A bleeding-edge dev studio. Our products are elegant front to back. (I think we're really good.)
 
-
+easter-eggs: i feel like our windowing design is asking for a 'microsoft solitare card cascade effect type thing'
 
 Push AI Chatbot over SMS
 
@@ -35,6 +35,11 @@ the problem: make a complex system accessible to a chat via a set of tools
 Our application lets students make submissions to update their data. Keeping student data up to date is essentially the main function of the app and what advisers spend significant amounts of time doing so this an opportunity to take some work off their plate. These student submissions get stored as diffs on their own model and get merged to their target once an adviser approves (or rejects) the request. It's a simple framework that has a fair bit of complexity in its implementation: open and rejected requests need distinct form states, requests to create records appear to students as actual records but with a pending approval label, many different end points for different data types, etc. Our initial AI tool design explained the system, gave context to the student and adviser submission workflow and handed over all of the student's data -- existing records, diffs on those, the status of the submissions, explained when to use the id of the submission in the tool vs the id of the record, etc. the thesis was: we're using a smart model, give it all the info and let it run. Actual use showed: consistent confusion on the model's part. It struggled to make sense of all we had dumped on it and to explain it suscinctly to students. It would mix up the status of a submission with the status of a college application; it would share model data and just state 'some updates are pending'. 
 the lesson: model context is its ui. our student ui shows only what they need to see. if they've made a request to change data, we don't need to show the old data. requests to add new records look as much like actual records as possible. we were piling on complexity that our ui had handled for it by the back end. solution: update the agent surface to mirror the ui. don't explain inner workings that should not be surfaced to the student. handle the complexity in code in the name of a simple surface and let the agent focus on its prime directive, not on decoding complex rules. 
 
+smart interaction:
+The client has no product leadership so it’s usually up to me and the team to turn vague asks into polished solutions. An example: we asked, “where can we integrate AI to make advisers’ lives easier?” The brief that evolved: a ’smart interaction’ tool to assist advisers’ most common data input task. In that initial conversation with the client we envisioned this as a new interface in the app. My work, including research into UI patterns, narrowed this down to a simple “fill fields from notes” button below the existing ‘notes’ field in the form - a simple intervention that meets advisers where they already are and makes adoption easy. A new AI agent with form rules and user guidance baked in takes the notes that advisers already write and infers form state, filling in the form for them. A new transition on form fields makes that ‘magic fill’ action visible. I ran automated testing across multiple models to determine the ideal model for the task - prioritizing speed and balancing accuracy and model cost. 
+In scoping out this feature, I looked into how advisers actually used the form and discovered that many were filling it out in batches, opening the modal form over and over again in quick succession. As a result I pitched and built out 2 more features: 
+1. To meet advisers where they are and save them the ‘open form over again’ hassle, a simple ‘keep window open’ toggle that lets them stay in the form between submissions. 
+2. To give power users a truly faster option: a new bulk import tool, extending our existing bulk import system to support the complex interaction form requirements: conditional fields, clearable select fields, improved error messages, more. 
 
 ---
 
