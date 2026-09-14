@@ -16,7 +16,7 @@ export function getStaticPaths() {
 const { study, prev, next } = Astro.props;
 ---
 
-<Base title={`${study.title} — Fraser Page`}>
+<Base title={`${study.title} — Fraser Page`} description={study.summary}>
 	<nav class="case-crumbs">
 		<a href="/">&larr; Back to Home</a>
 		<span class="crumb-sep">/</span>
