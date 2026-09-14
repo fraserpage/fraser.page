@@ -49,47 +49,31 @@ const { study, prev, next } = Astro.props;
 			}
 			if (block.visual === "tasks") {
 				return (
-					<div class="visual">
-						<svg viewBox="0 0 480 140" role="img" aria-label="Diagram mapping task checklist items to underlying student data fields">
-							<text x="0" y="16" font-size="9.5" letter-spacing="1" fill="var(--muted)">TASK</text>
-							<text x="300" y="16" font-size="9.5" letter-spacing="1" fill="var(--muted)">DATA CONDITION</text>
-							<text x="0" y="42" font-size="11" fill="var(--fg)">&#9745; Submit FAFSA</text>
-							<line x1="150" y1="37" x2="290" y2="37" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 3"></line>
-							<text x="300" y="42" font-size="10" fill="var(--muted)">financial_aid_status = submitted</text>
-							<text x="0" y="76" font-size="11" fill="var(--fg)">&#9744; Send transcript</text>
-							<line x1="150" y1="71" x2="290" y2="71" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 3"></line>
-							<text x="300" y="76" font-size="10" fill="var(--muted)">transcript_status = received</text>
-							<text x="0" y="110" font-size="11" fill="var(--fg)">&#9744; Finish application</text>
-							<line x1="150" y1="105" x2="290" y2="105" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 3"></line>
-							<text x="300" y="110" font-size="10" fill="var(--muted)">application_status = applied</text>
-							<text x="0" y="134" font-size="9" fill="var(--muted)">A task's state is just a read of the student's own data — nothing is stored twice.</text>
-						</svg>
-					</div>
+					<figure class="visual visual-shot">
+						<img
+							src="/images/grace/student-tasks.png"
+							width="1024"
+							height="1862"
+							alt="Student home screen grouping tasks into not approved, overdue, due soon, and to-do"
+						/>
+					</figure>
 				);
 			}
 			if (block.visual === "notes") {
 				return (
-					<div class="visual">
-						<svg viewBox="0 0 480 150" role="img" aria-label="Diagram of an adviser note being transformed into a filled interaction form via AI smart-fill">
-							<text x="0" y="16" font-size="9.5" letter-spacing="1" fill="var(--muted)">ADVISER NOTES</text>
-							<rect x="0" y="26" width="190" height="90" fill="none" stroke="var(--border)" stroke-width="1"></rect>
-							<text font-size="10" fill="var(--fg)">
-								<tspan x="12" y="48">call w/ student, fafsa</tspan>
-								<tspan x="12" y="63">deadline coming up,</tspan>
-								<tspan x="12" y="78">seemed stressed</tspan>
-							</text>
-							<text x="230" y="76" text-anchor="middle" font-size="9.5" fill="var(--muted)">smart-fill &#8594;</text>
-							<text x="290" y="16" font-size="9.5" letter-spacing="1" fill="var(--muted)">INTERACTION FORM</text>
-							<rect x="290" y="26" width="190" height="90" fill="none" stroke="var(--border)" stroke-width="1"></rect>
-							<text font-size="9.5" fill="var(--fg)">
-								<tspan x="302" y="45">Type: Advising call</tspan>
-								<tspan x="302" y="63">Topic: FAFSA deadline</tspan>
-								<tspan x="302" y="81">Follow-up: Yes</tspan>
-								<tspan x="302" y="99">Mood: Stressed</tspan>
-							</text>
-							<text x="0" y="138" font-size="9" fill="var(--muted)">A few words in, a structured record out — one button.</text>
-						</svg>
-					</div>
+					<figure class="visual visual-shot">
+						<video
+							src="/images/grace/fill-fields-from-notes.mp4"
+							width="978"
+							height="1612"
+							muted
+							loop
+							playsinline
+							preload="metadata"
+							aria-label="Add Interaction form: clicking Fill fields from notes infers topics and types from the adviser's notes"
+						></video>
+						<button type="button" class="visual-shot-toggle" aria-pressed="true">Pause</button>
+					</figure>
 				);
 			}
 			if (block.visual === "sms") {
@@ -271,10 +255,59 @@ const { study, prev, next } = Astro.props;
 		max-width: 34rem;
 	}
 
-	.visual svg {
+	.visual svg,
+	.visual img,
+	.visual video {
 		width: 100%;
 		height: auto;
 		display: block;
+	}
+
+	.visual-shot {
+		max-width: 30rem;
+		margin: 1.75rem 0 2rem;
+	}
+
+	.visual-shot img,
+	.visual-shot video {
+		border: 1px solid var(--border);
+	}
+
+	.visual-shot video {
+		cursor: pointer;
+	}
+
+	.visual-shot-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 44px;
+		min-width: 44px;
+		margin-top: 0.55rem;
+		padding: 0 0.15rem;
+		font: inherit;
+		font-size: 0.78rem;
+		font-variation-settings: "MONO" 1, "wght" 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--muted);
+		background: none;
+		border: none;
+		cursor: pointer;
+	}
+
+	.visual-shot-toggle:hover,
+	.visual-shot-toggle:focus-visible {
+		color: var(--fg);
+	}
+
+	.visual-shot-toggle:focus-visible {
+		outline: 1px dashed var(--fg);
+		outline-offset: 4px;
+	}
+
+	.visual-shot.is-paused .visual-shot-toggle {
+		color: var(--accent);
 	}
 
 	.case-pager {
@@ -306,3 +339,39 @@ const { study, prev, next } = Astro.props;
 		}
 	}
 </style>
+
+<script>
+	const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+	document.querySelectorAll(".visual-shot").forEach((shot) => {
+		const video = shot.querySelector("video");
+		const button = shot.querySelector(".visual-shot-toggle");
+		if (!(video instanceof HTMLVideoElement) || !(button instanceof HTMLButtonElement)) return;
+
+		function sync() {
+			const paused = video.paused;
+			shot.classList.toggle("is-paused", paused);
+			button.textContent = paused ? "Play" : "Pause";
+			button.setAttribute("aria-pressed", String(!paused));
+		}
+
+		function toggle() {
+			if (video.paused) {
+				video.play().catch(() => {});
+			} else {
+				video.pause();
+			}
+		}
+
+		button.addEventListener("click", toggle);
+		video.addEventListener("click", toggle);
+		video.addEventListener("play", sync);
+		video.addEventListener("pause", sync);
+
+		if (!reduceMotion) {
+			video.play().catch(() => {});
+		}
+
+		sync();
+	});
+</script>
