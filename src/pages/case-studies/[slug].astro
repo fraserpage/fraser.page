@@ -18,7 +18,11 @@ export function getStaticPaths() {
 const { study, prev, next } = Astro.props;
 ---
 
-<Base title={`${study.title} — Fraser Page`} description={study.summary}>
+<Base
+	title={`${study.title} — Fraser Page`}
+	description={study.summary}
+	headerAvatar
+>
 	<nav class="mb-12 flex items-center gap-[0.6rem] text-[0.8rem]">
 		<a class="text-muted no-underline hover:text-fg" href="/"
 			>&larr; Back to Home</a
