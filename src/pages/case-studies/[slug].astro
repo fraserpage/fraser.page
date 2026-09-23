@@ -7,7 +7,9 @@ export function getStaticPaths() {
 		params: { slug: study.slug },
 		props: {
 			study,
-			prev: caseStudies[(index - 1 + caseStudies.length) % caseStudies.length],
+			prev: caseStudies[
+				(index - 1 + caseStudies.length) % caseStudies.length
+			],
 			next: caseStudies[(index + 1) % caseStudies.length],
 		},
 	}));
@@ -18,122 +20,310 @@ const { study, prev, next } = Astro.props;
 
 <Base title={`${study.title} — Fraser Page`} description={study.summary}>
 	<nav class="mb-12 flex items-center gap-[0.6rem] text-[0.8rem]">
-		<a class="text-muted no-underline hover:text-fg" href="/">&larr; Back to Home</a>
+		<a class="text-muted no-underline hover:text-fg" href="/"
+			>&larr; Back to Home</a
+		>
 		<span class="text-border">/</span>
 		<details class="group relative open:[&>summary]:after:rotate-180">
-			<summary class="flex cursor-pointer list-none items-center gap-[0.4rem] tracking-[0.04em] text-accent uppercase fv-mono-600 after:size-0 after:border-x-4 after:border-t-[5px] after:border-x-transparent after:border-t-current after:transition-transform after:duration-150 after:ease-[cubic-bezier(0.25,0.1,0.25,1)] after:content-[''] [&::-webkit-details-marker]:hidden">Recent Work</summary>
-			<ul class="absolute top-[calc(100%+0.6rem)] left-0 z-10 hidden min-w-60 border border-border bg-bg py-[0.35rem] group-open:block">
-				{caseStudies.map((cs) => (
-					<li>
-						<a
-							class="flex gap-[0.6rem] px-[0.9rem] py-2 text-[0.85rem] whitespace-nowrap text-fg no-underline hover:bg-border aria-[current=page]:text-accent aria-[current=page]:fv-600"
-							href={`/case-studies/${cs.slug}/`}
-							aria-current={cs.slug === study.slug ? "page" : undefined}
-						>
-							<span class="text-muted fv-mono">{cs.no}</span>{cs.title}
-						</a>
-					</li>
-				))}
+			<summary
+				class="flex cursor-pointer list-none items-center gap-[0.4rem] tracking-[0.04em] text-accent uppercase fv-mono-600 after:size-0 after:border-x-4 after:border-t-[5px] after:border-x-transparent after:border-t-current after:transition-transform after:duration-150 after:ease-[cubic-bezier(0.25,0.1,0.25,1)] after:content-[''] [&::-webkit-details-marker]:hidden"
+				>Case Studies</summary
+			>
+			<ul
+				class="absolute top-[calc(100%+0.6rem)] left-0 z-10 hidden min-w-60 border border-border bg-bg py-[0.35rem] group-open:block"
+			>
+				{
+					caseStudies.map((cs) => (
+						<li>
+							<a
+								class="flex gap-[0.6rem] px-[0.9rem] py-2 text-[0.85rem] whitespace-nowrap text-fg no-underline hover:bg-border aria-[current=page]:text-accent aria-[current=page]:fv-600"
+								href={`/case-studies/${cs.slug}/`}
+								aria-current={
+									cs.slug === study.slug ? "page" : undefined
+								}
+							>
+								<span class="text-muted fv-mono">{cs.no}</span>
+								{cs.title}
+							</a>
+						</li>
+					))
+				}
 			</ul>
 		</details>
 	</nav>
 
 	<div class="mb-14 max-w-[42rem]">
-		<div class="mb-[0.9rem] block text-[0.8rem] tracking-[0.06em] text-accent uppercase fv-mono-600">{study.no} &mdash; {study.tag}</div>
-		<h1 class="m-0 text-[clamp(1.9rem,4vw,2.6rem)] tracking-[-0.01em] fv-600">{study.title}</h1>
+		<div
+			class="mb-[0.9rem] block text-[0.8rem] tracking-[0.06em] text-accent uppercase fv-mono-600"
+		>
+			{study.no} &mdash; {study.tag}
+		</div>
+		<h1
+			class="m-0 text-[clamp(1.9rem,4vw,2.6rem)] tracking-[-0.01em] fv-600"
+		>
+			{study.title}
+		</h1>
 	</div>
 
 	<div class="mb-16 max-w-[clamp(38rem,80vw,52rem)]">
-		{study.blocks.map((block) => {
-			if (block.h) {
-				return <h3 class="mt-9 mb-[0.9rem] text-[0.78rem] tracking-[0.05em] text-muted uppercase fv-mono-600 first:mt-0">{block.h}</h3>;
-			}
-			if (block.p) {
-				return <p class="mb-[1.1rem] text-base leading-[1.7]">{block.p}</p>;
-			}
-			if (block.visual === "tasks") {
-				return (
-					<figure class="visual-shot my-7 mb-8 max-w-[30rem]">
-						<img
-							class="h-auto w-full border border-border"
-							src="/images/grace/student-tasks.png"
-							width="1024"
-							height="1862"
-							alt="Student home screen grouping tasks into not approved, overdue, due soon, and to-do"
+		{
+			study.blocks.map((block) => {
+				if (block.h) {
+					return (
+						<h3 class="mt-9 mb-[0.9rem] text-[0.78rem] tracking-[0.05em] text-muted uppercase fv-mono-600 first:mt-0">
+							{block.h}
+						</h3>
+					);
+				}
+				if (block.p) {
+					return (
+						<p
+							class="mb-[1.1rem] text-base leading-[1.7]"
+							set:html={block.p}
 						/>
-					</figure>
-				);
-			}
-			if (block.visual === "notes") {
-				return (
-					<figure class="visual-shot my-7 mb-8 max-w-[30rem]">
-						<video
-							class="h-auto w-full cursor-pointer border border-border"
-							src="/images/grace/fill-fields-from-notes.mp4"
-							width="978"
-							height="1612"
-							muted
-							loop
-							playsinline
-							preload="metadata"
-							aria-label="Add Interaction form: clicking Fill fields from notes infers topics and types from the adviser's notes"
-						></video>
-						<button type="button" class="visual-shot-toggle mt-[0.55rem] inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center border-0 bg-transparent px-[0.15rem] text-[0.78rem] tracking-[0.04em] text-muted uppercase fv-mono-600 hover:text-fg focus-dash focus-visible:text-fg [.is-paused_&]:text-accent [.is-paused_&]:hover:text-accent [.is-paused_&]:focus-visible:text-accent" aria-pressed="true">Pause</button>
-					</figure>
-				);
-			}
-			if (block.visual === "sms") {
-				return (
-					<div class="my-7 mb-8 max-w-[34rem]">
-						<svg class="h-auto w-full" viewBox="0 0 480 200" role="img" aria-label="Comparison of a rigid script message versus an AI prompt message">
-							<text x="70" y="20" text-anchor="middle" font-size="10" letter-spacing="1" fill="var(--muted)">SCRIPT</text>
-							<rect x="10" y="32" width="200" height="158" fill="none" stroke="var(--border)" stroke-width="1"></rect>
-							<rect x="24" y="54" width="172" height="66" fill="none" stroke="var(--border)" stroke-width="1"></rect>
-							<text font-size="10" fill="var(--fg)">
-								<tspan x="34" y="73">Reminder: complete</tspan>
-								<tspan x="34" y="87">your application by</tspan>
-								<tspan x="34" y="101">the deadline.</tspan>
-							</text>
-							<text x="34" y="140" font-size="9" fill="var(--muted)">Same message,</text>
-							<text x="34" y="152" font-size="9" fill="var(--muted)">every student.</text>
-							<text x="410" y="20" text-anchor="middle" font-size="10" letter-spacing="1" fill="var(--muted)">PROMPT</text>
-							<rect x="270" y="32" width="200" height="158" fill="none" stroke="var(--border)" stroke-width="1"></rect>
-							<rect x="284" y="54" width="172" height="82" fill="none" stroke="var(--border)" stroke-width="1"></rect>
-							<text font-size="10" fill="var(--fg)">
-								<tspan x="294" y="71">Hi Maria — you're close</tspan>
-								<tspan x="294" y="85">to finishing your Ohio</tspan>
-								<tspan x="294" y="99">State application. Want</tspan>
-								<tspan x="294" y="113">help with the last part?</tspan>
-							</text>
-							<text x="294" y="152" font-size="9" fill="var(--muted)">Written per student,</text>
-							<text x="294" y="164" font-size="9" fill="var(--muted)">from their actual data.</text>
-						</svg>
-					</div>
-				);
-			}
-			return null;
-		})}
+					);
+				}
+				if (block.note) {
+					return (
+						<aside class="my-7 mb-8 border border-border">
+							<header class="border-b border-border px-[0.9rem] py-[0.45rem] text-[0.78rem] tracking-[0.05em] text-muted uppercase fv-mono-600">
+								{block.note.title}
+							</header>
+							<p
+								class="m-0 px-[0.9rem] py-[0.85rem] text-base leading-[1.7]"
+								set:html={block.note.p}
+							/>
+						</aside>
+					);
+				}
+				if (block.visual === "tasks") {
+					return (
+						<figure class="visual-shot my-7 mb-8 max-w-[30rem]">
+							<img
+								class="h-auto w-full border border-border"
+								src="/images/grace/student-tasks.png"
+								width="1024"
+								height="1862"
+								alt="Student home screen grouping tasks into not approved, overdue, due soon, and to-do"
+							/>
+							{block.caption && (
+								<figcaption
+									class="mt-[0.6rem] text-[0.8rem] leading-[1.6] text-muted"
+									set:html={block.caption}
+								/>
+							)}
+						</figure>
+					);
+				}
+				if (block.visual === "notes") {
+					return (
+						<figure class="visual-shot my-7 mb-8 max-w-[30rem]">
+							<video
+								class="block h-auto w-full cursor-pointer border border-border"
+								src="/images/grace/fill-fields-from-notes.mp4"
+								width="978"
+								height="1612"
+								muted
+								loop
+								playsinline
+								preload="metadata"
+								aria-label="Add Interaction form: clicking Fill fields from notes infers topics and types from the adviser's notes"
+							/>
+							<button
+								type="button"
+								class="visual-shot-toggle mt-[0.55rem] inline-flex min-h-11 cursor-pointer items-center gap-[0.5rem] border border-border bg-bg px-[0.7rem] text-[0.75rem] tracking-[0.05em] text-muted uppercase fv-mono-600 transition-colors duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:border-fg hover:text-fg focus-dash focus-visible:text-fg [.is-paused_&]:border-accent [.is-paused_&]:text-accent"
+							>
+								<svg
+									class="hidden size-[0.7rem] [.is-paused_&]:block"
+									viewBox="0 0 12 12"
+									fill="currentColor"
+									aria-hidden="true"
+								>
+									<path d="M2.5 0.75 10.25 6 2.5 11.25Z" />
+								</svg>
+								<svg
+									class="size-[0.7rem] [.is-paused_&]:hidden"
+									viewBox="0 0 12 12"
+									fill="currentColor"
+									aria-hidden="true"
+								>
+									<path d="M2.25 1h3v10h-3zM6.75 1h3v10h-3z" />
+								</svg>
+								<span class="visual-shot-label">Pause</span>
+							</button>
+							{block.caption && (
+								<figcaption
+									class="mt-[0.6rem] text-[0.8rem] leading-[1.6] text-muted"
+									set:html={block.caption}
+								/>
+							)}
+						</figure>
+					);
+				}
+				if (block.visual === "sms") {
+					return (
+						<div class="my-7 mb-8 max-w-[34rem]">
+							<svg
+								class="h-auto w-full"
+								viewBox="0 0 480 200"
+								role="img"
+								aria-label="Comparison of a rigid script message versus an AI prompt message"
+							>
+								<text
+									x="70"
+									y="20"
+									text-anchor="middle"
+									font-size="10"
+									letter-spacing="1"
+									fill="var(--muted)"
+								>
+									SCRIPT
+								</text>
+								<rect
+									x="10"
+									y="32"
+									width="200"
+									height="158"
+									fill="none"
+									stroke="var(--border)"
+									stroke-width="1"
+								/>
+								<rect
+									x="24"
+									y="54"
+									width="172"
+									height="66"
+									fill="none"
+									stroke="var(--border)"
+									stroke-width="1"
+								/>
+								<text font-size="10" fill="var(--fg)">
+									<tspan x="34" y="73">
+										Reminder: complete
+									</tspan>
+									<tspan x="34" y="87">
+										your application by
+									</tspan>
+									<tspan x="34" y="101">
+										the deadline.
+									</tspan>
+								</text>
+								<text
+									x="34"
+									y="140"
+									font-size="9"
+									fill="var(--muted)"
+								>
+									Same message,
+								</text>
+								<text
+									x="34"
+									y="152"
+									font-size="9"
+									fill="var(--muted)"
+								>
+									every student.
+								</text>
+								<text
+									x="410"
+									y="20"
+									text-anchor="middle"
+									font-size="10"
+									letter-spacing="1"
+									fill="var(--muted)"
+								>
+									PROMPT
+								</text>
+								<rect
+									x="270"
+									y="32"
+									width="200"
+									height="158"
+									fill="none"
+									stroke="var(--border)"
+									stroke-width="1"
+								/>
+								<rect
+									x="284"
+									y="54"
+									width="172"
+									height="82"
+									fill="none"
+									stroke="var(--border)"
+									stroke-width="1"
+								/>
+								<text font-size="10" fill="var(--fg)">
+									<tspan x="294" y="71">
+										Hi Maria — you're close
+									</tspan>
+									<tspan x="294" y="85">
+										to finishing your Ohio
+									</tspan>
+									<tspan x="294" y="99">
+										State application. Want
+									</tspan>
+									<tspan x="294" y="113">
+										help with the last part?
+									</tspan>
+								</text>
+								<text
+									x="294"
+									y="152"
+									font-size="9"
+									fill="var(--muted)"
+								>
+									Written per student,
+								</text>
+								<text
+									x="294"
+									y="164"
+									font-size="9"
+									fill="var(--muted)"
+								>
+									from their actual data.
+								</text>
+							</svg>
+						</div>
+					);
+				}
+				return null;
+			})
+		}
 	</div>
 
-	<div class="flex justify-between gap-6 border-t border-border pt-6 text-[0.85rem] max-[560px]:flex-col max-[560px]:gap-3">
-		<a class="text-muted no-underline" href={`/case-studies/${prev.slug}/`}>&larr; {prev.no} &mdash; {prev.title}</a>
-		<a class="text-accent no-underline fv-600" href={`/case-studies/${next.slug}/`}>{next.no} &mdash; {next.title} &rarr;</a>
+	<div
+		class="flex justify-between gap-6 border-t border-border pt-6 text-[0.85rem] max-[560px]:flex-col max-[560px]:gap-3"
+	>
+		<a class="text-muted no-underline" href={`/case-studies/${prev.slug}/`}
+			>&larr; {prev.no} &mdash; {prev.title}</a
+		>
+		<a
+			class="text-accent no-underline fv-600"
+			href={`/case-studies/${next.slug}/`}
+			>{next.no} &mdash; {next.title} &rarr;</a
+		>
 	</div>
 </Base>
 
 <script>
-	const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	const reduceMotion = window.matchMedia(
+		"(prefers-reduced-motion: reduce)",
+	).matches;
 
 	document.querySelectorAll(".visual-shot").forEach((shot) => {
 		const video = shot.querySelector("video");
 		const button = shot.querySelector(".visual-shot-toggle");
-		if (!(video instanceof HTMLVideoElement) || !(button instanceof HTMLButtonElement)) return;
+		const label = shot.querySelector(".visual-shot-label");
+		if (
+			!(video instanceof HTMLVideoElement) ||
+			!(button instanceof HTMLButtonElement)
+		)
+			return;
 
 		function sync() {
 			const paused = video.paused;
 			shot.classList.toggle("is-paused", paused);
-			button.textContent = paused ? "Play" : "Pause";
-			button.setAttribute("aria-pressed", String(!paused));
+			if (label) label.textContent = paused ? "Play" : "Pause";
 		}
 
 		function toggle() {

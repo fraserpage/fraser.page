@@ -2,6 +2,8 @@ export interface CaseStudyBlock {
   h?: string;
   p?: string;
   visual?: "diff" | "notes" | "tasks" | "sms";
+  caption?: string;
+  note?: { title: string; p: string };
 }
 
 export interface CaseStudy {
@@ -18,18 +20,20 @@ export const caseStudies: CaseStudy[] = [
     slug: "data-requests",
     no: "01",
     title: "Model context is its UI",
-    tag: "Agent Design",
+    tag: "Context Engineering",
     summary: "We context dumped the whole backend system into the agent, and it failed.",
     blocks: [
       { h: "The system" },
-      { p: "GRACE lets students make submissions to update their own data. Keeping student data up to date is essentially the main function of the app, and what advisers spend significant amounts of time doing — so this project was an opportunity to take some work off their plate. Student submissions get stored as diffs on their own model, and merge to their target once an adviser approves the request." },
-      { p: "It's a simple framework with a fair bit of complexity in its implementation: open and rejected requests need distinct form states, requests to create records appear to students as actual records but with a pending-approval label, many different endpoints for different data types, and so on." },
+      { p: "GRACE lets students make submissions to update their own data. Student submissions get stored as diffs on their own model, and merge to their target once an adviser approves the request." },
+      { p: "It's a simple framework with a fair bit of complexity in its implementation: open and rejected requests need distinct form states, requests to create records appear to students as actual records but with a pending-approval label, different endpoints for different data types, and so on." },
       { h: "The attempt" },
-      { p: "Our initial AI tool design explained the system, gave context on the student and adviser submission workflow, and handed over all of the student's data — existing records, diffs on those, the status of each submission, when to use the id of the submission vs. the id of the record. The thesis was: we're using a smart model, give it all the info and let it run." },
-      { p: "Actual use showed consistent confusion on the model's part. It struggled to make sense of everything we had dumped on it, and to explain any of it succinctly to students. It would mix up the status of a submission with the status of a college application; it would share model internals or say “some updates are pending” when the details of those updates were what the student needed to know." },
+      { p: "Our initial AI tool design explained the submission workflow and handed over all of the student's data — existing records, submissions to change those records, the status of each submission, and a separate list of open requests to create new records. The thesis was: we're using a smart model, give it all the info and let it run." },
+      { p: "Actual use showed consistent confusion on the model's part. It struggled to make sense of everything we had dumped on it, and to explain any of it succinctly to students. It would mix up the status of a submission with the status of a college application or say “some updates are pending” when the details of those updates were what the student needed to know. It mix up the id of a submission with the id of a record and create a new submission when the user intent was to edit an existing one. It would totally ignore create requests." },
       { h: "The lesson" },
-      { p: "Model context is its UI. Our student UI shows only what a student needs to see — if they've requested a change, we don't show them the old value; requests to add new records look as much like real records as possible. We were handing the model complexity that our own UI had never asked a human to deal with." },
-      { p: "So I rebuilt the agent surface to mirror the UI: don't explain inner workings that aren't surfaced to the student, handle the complexity in code in the name of a simple surface, and let the agent spend its attention on its prime directive rather than on decoding our data model." },
+      { p: "Our UI shows only what a student needs to see — if they've requested a change, we don't show them the old value; requests to add new records look as much like real records as possible. We were handing the model complexity that our UI abstracted away. The mistake was thinking of the model context as analogous to our back end. The realization I came to is that model context is its UI." },
+      { p: "I rebuilt the agent surface to mirror the UI: don't explain inner workings that aren't surfaced to the student, handle the complexity in code in the name of a simple surface, and let the agent spend its attention on its prime directive rather than on decoding our data model." },
+      { h: "The result" },
+      { p: "The new agent was much more effective. Confusion went away. It more accurately and consistently summarized the student's data in ways that made sense. And our simplifications reduced the payload size and cost per call." },
     ],
   },
   {
@@ -37,17 +41,27 @@ export const caseStudies: CaseStudy[] = [
     no: "02",
     title: "Vague client ask → three targeted features",
     tag: "Product Discovery",
-    summary: "The three features I ended up building came out of watching how advisers already worked, not from the brief.",
+    summary: "The three features I ended up building came out of research into user behavior.",
     blocks: [
       { h: "The brief" },
       { p: "This project came about after we had completed much of the extensive student-facing AI build-out. The question we asked in a client call was: “where can we integrate AI to make advisers' lives easier?” What evolved out of it was a “smart interaction” tool to assist advisers with their most common data-input task — logging an interaction every time they talk to a student." },
       { h: "Narrowing it down" },
-      { p: "In that first conversation we all pictured a new interface in the app. My work, including research into existing UI patterns, narrowed it to something much smaller: a “fill fields from notes” button sitting under the notes field in the existing interaction form. A small intervention that meets advisers where they are." },
-      { p: "An agent with the form's rules and the adviser documentation baked in reads the notes advisers already write and infers form state, filling the form in for them — with student names filtered out of what gets sent. A transition on the affected fields makes the magic-fill visible as it happens. We run form validation on what the agent filled out, which has the benefit of showing the user where they need to manually add some information. I ran automated testing across several models to pick the right one for the task, prioritizing speed and balancing accuracy against cost." },
-      { visual: "notes" },
-      { h: "What the research turned up" },
-      { p: "Scoping the feature, I dug into how advisers were actually using the form and found many of them working in batches — opening the modal, logging one interaction, closing it, opening it again. So I pitched and built two more features on the back of that." },
-      { p: "First, a “keep window open” toggle, for advisers who like the one-at-a-time dialog but shouldn't have to keep re-opening it. That toggle is visible in the video above. A simple intervention that saves users a repeated hassle. Second, for the power users, a new bulk import mode. This entailed extending our existing importer to handle the interaction form's harder requirements — conditional fields, clearable selects, better error messages — which improved every other bulk import in the app along the way and was a far bigger lift than the original feature — some 7k lines of code added over 100 files and 7 PRs." },
+      { p: "In that first conversation we all pictured a new interface in the app. My work, including research into existing UI patterns, narrowed it to something smaller: a “fill fields from notes” button sitting under the notes field in the existing interaction form. A small intervention that meets advisers where they are." },
+      { p: "An agent with the form's rules and the adviser documentation baked in reads the notes advisers already write and infers form state, filling the form for them in a fraction of the time it would take by hand. A new transition on the affected fields makes the magic-fill visible as it happens. We run form validation on what the agent filled out, which has the benefit of showing the user where they need to manually add some information. I ran automated testing across several models to pick the right one for the task, prioritizing speed and balancing accuracy against cost." },
+      {
+        note: {
+          title: "Note: September 2026",
+          p: "The AI dev community is all a-twitter about <a href='https://typesafe.ai/' target='_blank'>Jev</a>, a new model that is exactly right for this use case and plenty of others. Jev is crazy fast, plenty smart, and super cheap, but it can only send structured output —  it can't generate text, only choose from a fixed set of options. That's exactly what we have here. It would be the obvious choice, and that automated testing step would be unnecessary. (I can think of a few other places in the app that would be great candidates for a Jev-assisted feature too... e.g. quick filtering.)",
+        },
+      },
+      {
+        visual: "notes",
+        caption: "Don't worry, that's not a real student name. The client has justifiable anxiety about sending student data to OpenAI, so this tool never shares the student selected in the form, and it strips the student's name out of the notes field before that text reaches the LLM. (I built a more elaborate anonymization system for the student chatbot which gives the LLM placeholders it can use in order to address the student by name.) ",
+      },
+
+      { h: "Pitching more features based on my research" },
+      { p: "Scoping the feature, I dug into how advisers were actually using the form and found many of them working in batches — opening the modal, logging an interaction (which closes the modal), opening the modal again. As a result, I pitched and built two more features on the back of that." },
+      { p: "First, a “keep window open” toggle, for advisers who like the one-at-a-time dialog but shouldn't have to keep re-opening it. That toggle is visible in the video above. It's a simple intervention that saves users a repeated hassle. Second, for the power users, a new bulk import mode. This entailed extending our existing importer to handle the interaction form's harder requirements — conditional fields, clearable selects, better error messages — which improved every other bulk import in the app along the way and was a far bigger lift than the original feature — some 7k lines of code added over 100 files and 7 PRs." },
     ],
   },
   {
