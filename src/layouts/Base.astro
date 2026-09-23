@@ -5,12 +5,14 @@ interface Props {
 	title?: string;
 	description?: string;
 	image?: string;
+	headerAvatar?: boolean;
 }
 
 const {
 	title = "Fraser Page",
 	description = "Product-minded, AI-native developer. Case studies and selected product work.",
 	image = "/og.png",
+	headerAvatar = false,
 } = Astro.props;
 
 const site = Astro.site ?? new URL("https://fraser.page");
@@ -27,6 +29,16 @@ const ogImage = new URL(image, site);
 		<meta name="description" content={description} />
 		<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 		<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)" />
+		<script is:inline>
+			(function () {
+				try {
+					var t = localStorage.getItem("fp:theme");
+					if (t === "light" || t === "dark") {
+						document.documentElement.setAttribute("data-theme", t);
+					}
+				} catch (e) {}
+			})();
+		</script>
 		<meta name="generator" content={Astro.generator} />
 		<link rel="canonical" href={canonical} />
 		<meta property="og:type" content="website" />
@@ -47,20 +59,29 @@ const ogImage = new URL(image, site);
 		<title>{title}</title>
 	</head>
 	<body class="mx-auto max-w-[76rem] bg-bg px-8 pt-10 pb-24 font-sans text-base leading-[1.55] text-fg fv-body">
-		<div class="mb-18 flex items-baseline justify-between border-b border-border pb-5 text-[0.85rem]">
-			<a class="fv-700 no-underline" href="/">Fraser Page</a>
-			<span id="theme-links">
+		<div class="mb-18 flex items-center justify-between border-b border-border pb-5 text-[0.85rem]">
+			<a class="flex items-center gap-[0.5rem] fv-700 no-underline" href="/">
+				{headerAvatar && (
+					<img
+						class="size-6 shrink-0 rounded-full object-cover"
+						src="/images/fraser.jpg"
+						alt=""
+						width="256"
+						height="256"
+					/>
+				)}
+				Fraser Page
+			</a>
+			<span id="theme-links" role="group" aria-label="Color theme">
 				<button
 					type="button"
 					data-theme-choice="light"
-					aria-current="false"
 					class="cursor-pointer text-muted aria-[current=true]:text-fg aria-[current=true]:fv-600"
 				>Light</button>
 				<span class="mx-[0.35rem] text-muted">/</span>
 				<button
 					type="button"
 					data-theme-choice="dark"
-					aria-current="false"
 					class="cursor-pointer text-muted aria-[current=true]:text-fg aria-[current=true]:fv-600"
 				>Dark</button>
 			</span>
@@ -76,29 +97,56 @@ const ogImage = new URL(image, site);
 		<script>
 			const root = document.documentElement;
 			const themeButtons = document.querySelectorAll("[data-theme-choice]");
+			const THEME_KEY = "fp:theme";
+			const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-			function applyTheme(mode: string) {
-				if (mode === "light" || mode === "dark") {
-					root.setAttribute("data-theme", mode);
-				} else {
-					root.removeAttribute("data-theme");
-				}
-				themeButtons.forEach((b) => {
-					b.setAttribute("aria-current", String(b.getAttribute("data-theme-choice") === mode));
-				});
+			function savedTheme(): "light" | "dark" | null {
 				try {
-					localStorage.setItem("fp:theme", mode);
+					const t = localStorage.getItem(THEME_KEY);
+					if (t === "light" || t === "dark") return t;
+					if (t != null) localStorage.removeItem(THEME_KEY);
+				} catch (e) {}
+				return null;
+			}
+
+			function systemTheme(): "light" | "dark" {
+				return systemDark.matches ? "dark" : "light";
+			}
+
+			function markCurrent(mode: "light" | "dark") {
+				themeButtons.forEach((b) => {
+					if (b.getAttribute("data-theme-choice") === mode) {
+						b.setAttribute("aria-current", "true");
+					} else {
+						b.removeAttribute("aria-current");
+					}
+				});
+			}
+
+			function applyTheme(mode: "light" | "dark") {
+				root.setAttribute("data-theme", mode);
+				markCurrent(mode);
+				try {
+					localStorage.setItem(THEME_KEY, mode);
 				} catch (e) {}
 			}
 
 			themeButtons.forEach((b) => {
-				b.addEventListener("click", () => applyTheme(b.getAttribute("data-theme-choice") ?? ""));
+				b.addEventListener("click", () => {
+					const choice = b.getAttribute("data-theme-choice");
+					if (choice === "light" || choice === "dark") applyTheme(choice);
+				});
 			});
 
-			try {
-				const savedTheme = localStorage.getItem("fp:theme");
-				if (savedTheme) applyTheme(savedTheme);
-			} catch (e) {}
+			const saved = savedTheme();
+			if (saved) {
+				applyTheme(saved);
+			} else {
+				markCurrent(systemTheme());
+				systemDark.addEventListener("change", () => {
+					if (!savedTheme()) markCurrent(systemTheme());
+				});
+			}
 		</script>
 	</body>
 </html>
