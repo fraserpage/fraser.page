@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@font-face {
+	font-family: "Recursive";
+	font-style: normal;
+	font-weight: 300 1000;
+	font-display: swap;
+	src: url("/fonts/recursive-latin.woff2") format("woff2");
+}
+
+:root {
+	--bg: #ffffff;
+	--fg: #111214;
+	--muted: #5b6270;
+	--border: #e2e4e8;
+	--accent: #3549d6;
+}
+
+:root[data-theme="dark"] {
+	--bg: #111214;
+	--fg: #f2f2f2;
+	--muted: #9096a0;
+	--border: #2a2c30;
+	--accent: #7c93ff;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--bg: #111214;
+		--fg: #f2f2f2;
+		--muted: #9096a0;
+		--border: #2a2c30;
+		--accent: #7c93ff;
+	}
+}
+
+@theme {
+	--font-sans: "Recursive", ui-sans-serif, system-ui, sans-serif;
+}
+
+@theme inline {
+	--color-bg: var(--bg);
+	--color-fg: var(--fg);
+	--color-muted: var(--muted);
+	--color-border: var(--border);
+	--color-accent: var(--accent);
+}
+
+@custom-variant fine {
+	@media (hover: hover) and (pointer: fine) {
+		@slot;
+	}
+}
+
+@utility fv-body {
+	font-variation-settings: "wght" 380, "MONO" 0, "CASL" 0;
+}
+
+@utility fv-600 {
+	font-variation-settings: "wght" 600;
+}
+
+@utility fv-700 {
+	font-variation-settings: "wght" 700;
+}
+
+@utility fv-mono {
+	font-variation-settings: "MONO" 1;
+}
+
+@utility fv-mono-600 {
+	font-variation-settings: "MONO" 1, "wght" 600;
+}
+
+@utility focus-dash {
+	&:focus-visible {
+		outline: 1px dashed var(--fg);
+		outline-offset: 4px;
+	}
+}
+
+@layer base {
+	a {
+		text-decoration-line: underline;
+		text-underline-offset: 2px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition: none !important;
+	}
+}

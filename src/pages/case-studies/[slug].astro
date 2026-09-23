@@ -17,16 +17,20 @@ const { study, prev, next } = Astro.props;
 ---
 
 <Base title={`${study.title} — Fraser Page`} description={study.summary}>
-	<nav class="case-crumbs">
-		<a href="/">&larr; Back to Home</a>
-		<span class="crumb-sep">/</span>
-		<details class="case-switcher">
-			<summary>Recent Work</summary>
-			<ul>
+	<nav class="mb-12 flex items-center gap-[0.6rem] text-[0.8rem]">
+		<a class="text-muted no-underline hover:text-fg" href="/">&larr; Back to Home</a>
+		<span class="text-border">/</span>
+		<details class="group relative open:[&>summary]:after:rotate-180">
+			<summary class="flex cursor-pointer list-none items-center gap-[0.4rem] tracking-[0.04em] text-accent uppercase fv-mono-600 after:size-0 after:border-x-4 after:border-t-[5px] after:border-x-transparent after:border-t-current after:transition-transform after:duration-150 after:ease-[cubic-bezier(0.25,0.1,0.25,1)] after:content-[''] [&::-webkit-details-marker]:hidden">Recent Work</summary>
+			<ul class="absolute top-[calc(100%+0.6rem)] left-0 z-10 hidden min-w-60 border border-border bg-bg py-[0.35rem] group-open:block">
 				{caseStudies.map((cs) => (
 					<li>
-						<a href={`/case-studies/${cs.slug}/`} aria-current={cs.slug === study.slug ? "page" : undefined}>
-							<span class="switcher-no">{cs.no}</span>{cs.title}
+						<a
+							class="flex gap-[0.6rem] px-[0.9rem] py-2 text-[0.85rem] whitespace-nowrap text-fg no-underline hover:bg-border aria-[current=page]:text-accent aria-[current=page]:fv-600"
+							href={`/case-studies/${cs.slug}/`}
+							aria-current={cs.slug === study.slug ? "page" : undefined}
+						>
+							<span class="text-muted fv-mono">{cs.no}</span>{cs.title}
 						</a>
 					</li>
 				))}
@@ -34,23 +38,24 @@ const { study, prev, next } = Astro.props;
 		</details>
 	</nav>
 
-	<div class="case-header">
-		<div class="label">{study.no} &mdash; {study.tag}</div>
-		<h1>{study.title}</h1>
+	<div class="mb-14 max-w-[42rem]">
+		<div class="mb-[0.9rem] block text-[0.8rem] tracking-[0.06em] text-accent uppercase fv-mono-600">{study.no} &mdash; {study.tag}</div>
+		<h1 class="m-0 text-[clamp(1.9rem,4vw,2.6rem)] tracking-[-0.01em] fv-600">{study.title}</h1>
 	</div>
 
-	<div class="case-body">
+	<div class="mb-16 max-w-[clamp(38rem,80vw,52rem)]">
 		{study.blocks.map((block) => {
 			if (block.h) {
-				return <h3>{block.h}</h3>;
+				return <h3 class="mt-9 mb-[0.9rem] text-[0.78rem] tracking-[0.05em] text-muted uppercase fv-mono-600 first:mt-0">{block.h}</h3>;
 			}
 			if (block.p) {
-				return <p>{block.p}</p>;
+				return <p class="mb-[1.1rem] text-base leading-[1.7]">{block.p}</p>;
 			}
 			if (block.visual === "tasks") {
 				return (
-					<figure class="visual visual-shot">
+					<figure class="visual-shot my-7 mb-8 max-w-[30rem]">
 						<img
+							class="h-auto w-full border border-border"
 							src="/images/grace/student-tasks.png"
 							width="1024"
 							height="1862"
@@ -61,8 +66,9 @@ const { study, prev, next } = Astro.props;
 			}
 			if (block.visual === "notes") {
 				return (
-					<figure class="visual visual-shot">
+					<figure class="visual-shot my-7 mb-8 max-w-[30rem]">
 						<video
+							class="h-auto w-full cursor-pointer border border-border"
 							src="/images/grace/fill-fields-from-notes.mp4"
 							width="978"
 							height="1612"
@@ -72,14 +78,14 @@ const { study, prev, next } = Astro.props;
 							preload="metadata"
 							aria-label="Add Interaction form: clicking Fill fields from notes infers topics and types from the adviser's notes"
 						></video>
-						<button type="button" class="visual-shot-toggle" aria-pressed="true">Pause</button>
+						<button type="button" class="visual-shot-toggle mt-[0.55rem] inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center border-0 bg-transparent px-[0.15rem] text-[0.78rem] tracking-[0.04em] text-muted uppercase fv-mono-600 hover:text-fg focus-dash focus-visible:text-fg [.is-paused_&]:text-accent [.is-paused_&]:hover:text-accent [.is-paused_&]:focus-visible:text-accent" aria-pressed="true">Pause</button>
 					</figure>
 				);
 			}
 			if (block.visual === "sms") {
 				return (
-					<div class="visual">
-						<svg viewBox="0 0 480 200" role="img" aria-label="Comparison of a rigid script message versus an AI prompt message">
+					<div class="my-7 mb-8 max-w-[34rem]">
+						<svg class="h-auto w-full" viewBox="0 0 480 200" role="img" aria-label="Comparison of a rigid script message versus an AI prompt message">
 							<text x="70" y="20" text-anchor="middle" font-size="10" letter-spacing="1" fill="var(--muted)">SCRIPT</text>
 							<rect x="10" y="32" width="200" height="158" fill="none" stroke="var(--border)" stroke-width="1"></rect>
 							<rect x="24" y="54" width="172" height="66" fill="none" stroke="var(--border)" stroke-width="1"></rect>
@@ -109,236 +115,11 @@ const { study, prev, next } = Astro.props;
 		})}
 	</div>
 
-	<div class="case-pager">
-		<a href={`/case-studies/${prev.slug}/`}>&larr; {prev.no} &mdash; {prev.title}</a>
-		<a href={`/case-studies/${next.slug}/`}>{next.no} &mdash; {next.title} &rarr;</a>
+	<div class="flex justify-between gap-6 border-t border-border pt-6 text-[0.85rem] max-[560px]:flex-col max-[560px]:gap-3">
+		<a class="text-muted no-underline" href={`/case-studies/${prev.slug}/`}>&larr; {prev.no} &mdash; {prev.title}</a>
+		<a class="text-accent no-underline fv-600" href={`/case-studies/${next.slug}/`}>{next.no} &mdash; {next.title} &rarr;</a>
 	</div>
 </Base>
-
-<style>
-	.case-crumbs {
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-		font-size: 0.8rem;
-		margin-bottom: 3rem;
-	}
-
-	.case-crumbs > a {
-		text-decoration: none;
-		color: var(--muted);
-	}
-
-	.case-crumbs > a:hover {
-		color: var(--fg);
-	}
-
-	.crumb-sep {
-		color: var(--border);
-	}
-
-	.case-switcher {
-		position: relative;
-	}
-
-	.case-switcher summary {
-		list-style: none;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
-		color: var(--accent);
-		font-variation-settings: "MONO" 1, "wght" 600;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-	}
-
-	.case-switcher summary::-webkit-details-marker {
-		display: none;
-	}
-
-	.case-switcher summary::after {
-		content: "";
-		width: 0;
-		height: 0;
-		border-left: 4px solid transparent;
-		border-right: 4px solid transparent;
-		border-top: 5px solid currentColor;
-		transition: transform 0.15s ease;
-	}
-
-	.case-switcher[open] summary::after {
-		transform: rotate(180deg);
-	}
-
-	.case-switcher ul {
-		position: absolute;
-		top: calc(100% + 0.6rem);
-		left: 0;
-		min-width: 15rem;
-		background: var(--bg);
-		border: 1px solid var(--border);
-		list-style: none;
-		margin: 0;
-		padding: 0.35rem 0;
-		z-index: 10;
-	}
-
-	.case-switcher li a {
-		display: flex;
-		gap: 0.6rem;
-		padding: 0.5rem 0.9rem;
-		text-decoration: none;
-		color: var(--fg);
-		font-size: 0.85rem;
-		white-space: nowrap;
-	}
-
-	.case-switcher li a:hover {
-		background: var(--border);
-	}
-
-	.case-switcher li a[aria-current="page"] {
-		font-variation-settings: "wght" 600;
-		color: var(--accent);
-	}
-
-	.switcher-no {
-		font-variation-settings: "MONO" 1;
-		color: var(--muted);
-	}
-
-	.case-header {
-		max-width: 42rem;
-		margin-bottom: 3.5rem;
-	}
-
-	.case-header .label {
-		color: var(--accent);
-		display: block;
-		margin-bottom: 0.9rem;
-	}
-
-	.case-header h1 {
-		font-size: clamp(1.9rem, 4vw, 2.6rem);
-		font-variation-settings: "wght" 600;
-		margin: 0;
-		letter-spacing: -0.01em;
-	}
-
-	.case-body {
-		max-width: clamp(38rem, 80vw, 52rem);
-		margin-bottom: 4rem;
-	}
-
-	.case-body h3 {
-		font-size: 0.78rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		font-variation-settings: "wght" 600, "MONO" 1;
-		color: var(--muted);
-		margin: 2.25rem 0 0.9rem;
-	}
-
-	.case-body h3:first-child {
-		margin-top: 0;
-	}
-
-	.case-body p {
-		margin: 0 0 1.1rem;
-		font-size: 1rem;
-		line-height: 1.7;
-	}
-
-	.visual {
-		margin: 1.75rem 0 2rem;
-		max-width: 34rem;
-	}
-
-	.visual svg,
-	.visual img,
-	.visual video {
-		width: 100%;
-		height: auto;
-		display: block;
-	}
-
-	.visual-shot {
-		max-width: 30rem;
-		margin: 1.75rem 0 2rem;
-	}
-
-	.visual-shot img,
-	.visual-shot video {
-		border: 1px solid var(--border);
-	}
-
-	.visual-shot video {
-		cursor: pointer;
-	}
-
-	.visual-shot-toggle {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		min-height: 44px;
-		min-width: 44px;
-		margin-top: 0.55rem;
-		padding: 0 0.15rem;
-		font: inherit;
-		font-size: 0.78rem;
-		font-variation-settings: "MONO" 1, "wght" 600;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: var(--muted);
-		background: none;
-		border: none;
-		cursor: pointer;
-	}
-
-	.visual-shot-toggle:hover,
-	.visual-shot-toggle:focus-visible {
-		color: var(--fg);
-	}
-
-	.visual-shot-toggle:focus-visible {
-		outline: 1px dashed var(--fg);
-		outline-offset: 4px;
-	}
-
-	.visual-shot.is-paused .visual-shot-toggle {
-		color: var(--accent);
-	}
-
-	.case-pager {
-		border-top: 1px solid var(--border);
-		padding-top: 1.5rem;
-		display: flex;
-		justify-content: space-between;
-		gap: 1.5rem;
-		font-size: 0.85rem;
-	}
-
-	.case-pager a {
-		text-decoration: none;
-	}
-
-	.case-pager a:last-child {
-		font-variation-settings: "wght" 600;
-		color: var(--accent);
-	}
-
-	.case-pager a:first-child {
-		color: var(--muted);
-	}
-
-	@media (max-width: 560px) {
-		.case-pager {
-			flex-direction: column;
-			gap: 0.75rem;
-		}
-	}
-</style>
 
 <script>
 	const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

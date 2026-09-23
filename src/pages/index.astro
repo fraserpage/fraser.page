@@ -49,294 +49,97 @@ const personal = [
 ---
 
 <Base>
-	<div class="hero">
-		<h1>Product-minded, AI-native developer.</h1>
+	<div class="mb-22 max-w-[46rem]">
+		<div class="flex items-center gap-8">
+			<img
+				class="size-32 shrink-0 rounded-full object-cover"
+				src="/images/fraser-headshot.jpg"
+				alt="Fraser Page"
+				width="1436"
+				height="1436"
+			/>
+			<h1 class="m-0 text-[clamp(2.2rem,5vw,3.5rem)] leading-[1.12] tracking-[-0.01em] fv-600">Product-minded, AI-native developer.</h1>
+		</div>
 	</div>
 
-	<section id="recent-work" class="section">
-		<div class="section-intro">
-			<h2 class="label">Recent Work</h2>
-			<p>Two years at Springloaded on College Advising Corps&rsquo; GRACE platform, used by hundreds of advisers across the US to support hundreds of thousands of students through the college application process. It&rsquo;s a recently rewritten, data-intensive Laravel/Vue/TS platform. I grew into the lead developer role and worked directly with the client, often in a pseudo&#8209;product&#8209;manager capacity. One of my big projects was turning the students GRACE served into users of it, which included an AI build-out: a chat agent over SMS and web, AI-driven bulk messaging, a scoped RAG knowledge base, and an agent toolset for retrieving and modifying student records.</p>
+	<section id="recent-work" class="mb-22 border-t border-border pt-11">
+		<div class="mb-11 max-w-[clamp(38rem,80vw,52rem)] pl-16 max-[640px]:pl-0">
+			<h2 class="mb-[1.1rem] block text-[0.8rem] tracking-[0.06em] uppercase fv-mono-600">Recent Work</h2>
+			<p class="m-0 text-base leading-[1.4]">Two years at Springloaded on College Advising Corps&rsquo; GRACE platform, used by hundreds of advisers across the US to support hundreds of thousands of students through the college application process. It&rsquo;s a recently rewritten, data-intensive Laravel/Vue/TS platform. I grew into the lead developer role and worked directly with the client, often in a pseudo&#8209;product&#8209;manager capacity. One of my big projects was turning the students GRACE served into users of it, which included an AI build-out: a chat agent over SMS and web, AI-driven bulk messaging, a scoped RAG knowledge base, and an agent toolset for retrieving and modifying student records.</p>
 		</div>
 
-		<div class="work-list">
+		<div class="flex flex-col">
 			{caseStudies.map((c) => (
-				<a class="work-row" href={`/case-studies/${c.slug}/`}>
-					<span class="work-no">{c.no}</span>
-					<span class="work-title">{c.title}</span>
-					<span class="work-tag">{c.tag}</span>
-					<span class="work-summary">{c.summary}</span>
+				<a
+					class="group grid grid-cols-1 items-baseline gap-x-5 gap-y-[0.4rem] border-t border-border py-7 text-inherit no-underline last:border-b focus-dash min-[641px]:grid-cols-[2.75rem_1fr_auto] min-[641px]:gap-y-0 min-[941px]:grid-cols-[2.75rem_3fr_3fr_5fr]"
+					href={`/case-studies/${c.slug}/`}
+				>
+					<span class="text-[0.85rem] text-muted fv-mono">{c.no}</span>
+					<span class="text-xl fv-600 group-hover:underline group-hover:underline-offset-[3px]">{c.title}</span>
+					<span class="col-start-1 text-left text-[0.78rem] tracking-[0.04em] whitespace-normal text-accent uppercase fv-mono-600 min-[641px]:col-start-3 min-[641px]:text-right min-[641px]:whitespace-nowrap min-[941px]:col-start-auto min-[941px]:text-left min-[941px]:whitespace-normal">{c.tag}</span>
+					<span class="col-start-1 text-[0.95rem] text-muted min-[641px]:col-start-2 min-[641px]:col-end-4 min-[641px]:mt-2 min-[941px]:col-start-auto min-[941px]:col-end-auto min-[941px]:mt-0">{c.summary}</span>
 				</a>
 			))}
 		</div>
 	</section>
 
-	<section class="section">
-		<div class="section-intro">
-			<h2 class="label">Heritage</h2>
-			<p>Before Springloaded I was at Briteweb, building bespoke sites and tools for mission&#8209;driven clients. I enjoy the agency model: variety, real problems, greenfields, and a stack of finished things to be proud of at the end.</p>
+	<section class="mb-22 border-t border-border pt-11">
+		<div class="mb-11 max-w-[clamp(38rem,80vw,52rem)] pl-16 max-[640px]:pl-0">
+			<h2 class="mb-[1.1rem] block text-[0.8rem] tracking-[0.06em] uppercase fv-mono-600">Heritage</h2>
+			<p class="m-0 text-base leading-[1.4]">Before Springloaded I was at Briteweb, building bespoke sites and tools for mission&#8209;driven clients. I enjoy the agency model: variety, real problems, greenfields, and a stack of finished things to be proud of at the end.</p>
 		</div>
-		<div class="listing-list">
+		<div class="flex flex-col">
 			{heritage.map((h) => (
-				<a class="listing-row" href={h.link} target="_blank" rel="noopener noreferrer">
-					<span class="listing-thumb">
-						<img src={h.thumb} alt={h.title} loading="lazy" />
-						<span class="listing-peek"><img src={h.peek} alt="" loading="lazy" /></span>
+				<a
+					class="group/row grid grid-cols-1 items-center gap-x-5 gap-y-[0.4rem] border-t border-border py-6 text-inherit no-underline last:border-b focus-dash min-[641px]:grid-cols-[2.75rem_16rem_1fr_3.5rem] min-[641px]:gap-y-0 min-[641px]:py-[1.1rem]"
+					href={h.link}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<span class="group/thumb relative block size-11 max-[640px]:mb-1">
+						<img class="size-full object-cover" src={h.thumb} alt={h.title} loading="lazy" />
+						<span class="pointer-events-none invisible absolute bottom-[calc(100%+0.6rem)] left-[calc(100%+0.6rem)] z-10 size-44 translate-y-1 border border-fg bg-bg opacity-0 transition-[opacity,translate] duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-focus-visible/row:visible group-focus-visible/row:translate-y-0 group-focus-visible/row:opacity-100 max-[640px]:hidden fine:group-hover/thumb:visible fine:group-hover/thumb:translate-y-0 fine:group-hover/thumb:opacity-100">
+							<img class="size-full object-cover" src={h.peek} alt="" loading="lazy" />
+						</span>
 					</span>
-					<span class="listing-name">{h.title}</span>
-					<span class="listing-detail">{h.detail}</span>
-					<span class="listing-year">{h.year}</span>
+					<span class="text-[0.95rem] fv-600 group-hover/row:underline group-hover/row:underline-offset-[3px]">{h.title}</span>
+					<span class="text-[0.9rem] text-muted">{h.detail}</span>
+					<span class="text-left text-[0.85rem] whitespace-nowrap text-muted fv-mono min-[641px]:text-right">{h.year}</span>
 				</a>
 			))}
 		</div>
 	</section>
 
-	<section class="section">
-		<div class="section-intro">
-			<h2 class="label">Play</h2>
-			<p>I wanted our wedding RSVP to feel like us, so I built it.</p>
+	<section class="mb-22 border-t border-border pt-11">
+		<div class="mb-11 max-w-[clamp(38rem,80vw,52rem)] pl-16 max-[640px]:pl-0">
+			<h2 class="mb-[1.1rem] block text-[0.8rem] tracking-[0.06em] uppercase fv-mono-600">Play</h2>
+			<p class="m-0 text-base leading-[1.4]">I wanted our wedding RSVP to feel like us, so I built it.</p>
 		</div>
-		<div class="listing-list">
+		<div class="flex flex-col">
 			{personal.map((p) => (
-				<a class="listing-row no-year" href={p.link} target="_blank" rel="noopener noreferrer">
-					<span class="listing-thumb">
-						<img src={p.thumb} alt={p.title} loading="lazy" />
-						<span class="listing-peek"><img src={p.peek} alt="" loading="lazy" /></span>
+				<a
+					class="group/row grid grid-cols-1 items-center gap-x-5 gap-y-[0.4rem] border-t border-border py-6 text-inherit no-underline last:border-b focus-dash min-[641px]:grid-cols-[2.75rem_16rem_1fr] min-[641px]:gap-y-0 min-[641px]:py-[1.1rem]"
+					href={p.link}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<span class="group/thumb relative block size-11 max-[640px]:mb-1">
+						<img class="size-full object-cover" src={p.thumb} alt={p.title} loading="lazy" />
+						<span class="pointer-events-none invisible absolute bottom-[calc(100%+0.6rem)] left-[calc(100%+0.6rem)] z-10 size-44 translate-y-1 border border-fg bg-bg opacity-0 transition-[opacity,translate] duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-focus-visible/row:visible group-focus-visible/row:translate-y-0 group-focus-visible/row:opacity-100 max-[640px]:hidden fine:group-hover/thumb:visible fine:group-hover/thumb:translate-y-0 fine:group-hover/thumb:opacity-100">
+							<img class="size-full object-cover" src={p.peek} alt="" loading="lazy" />
+						</span>
 					</span>
-					<span class="listing-name">{p.title}</span>
-					<span class="listing-detail">{p.detail}</span>
+					<span class="text-[0.95rem] fv-600 group-hover/row:underline group-hover/row:underline-offset-[3px]">{p.title}</span>
+					<span class="text-[0.9rem] text-muted">{p.detail}</span>
 				</a>
 			))}
 		</div>
 	</section>
 
-	<section class="section close">
-		<div class="section-intro" style="margin-bottom: 0;">
-			<h2 class="label">Get in touch</h2>
-			<p>I&rsquo;m happiest contributing holistically, from thinking through the brief while it&rsquo;s still fuzzy to the last bit of polish. So I&rsquo;m looking for a team that cares as much about the decision as the delivery: where design carries real weight, and there&rsquo;s room to grow past &ldquo;developer.&rdquo; If that sounds like yours: <a href="mailto:fp@fraser.page">fp@fraser.page</a></p>
+	<section class="mb-22 border-t border-border pt-11">
+		<div class="mb-0 max-w-[clamp(38rem,80vw,52rem)] pl-16 max-[640px]:pl-0">
+			<h2 class="mb-[1.1rem] block text-[0.8rem] tracking-[0.06em] uppercase fv-mono-600">Get in touch</h2>
+			<p class="m-0 text-base leading-[1.4]">I&rsquo;m happiest contributing holistically, from thinking through the brief while it&rsquo;s still fuzzy to the last bit of polish. So I&rsquo;m looking for a team that cares as much about the decision as the delivery: where design carries real weight, and there&rsquo;s room to grow past &ldquo;developer.&rdquo; If that sounds like yours: <a href="mailto:fp@fraser.page">fp@fraser.page</a></p>
 		</div>
 	</section>
 </Base>
-
-<style>
-	.hero {
-		max-width: 46rem;
-		margin-bottom: 5.5rem;
-	}
-
-	.hero h1 {
-		font-size: clamp(2.2rem, 5vw, 3.5rem);
-		line-height: 1.12;
-		font-variation-settings: "wght" 600;
-		margin: 0;
-		letter-spacing: -0.01em;
-	}
-
-	.work-list {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.work-row {
-		display: grid;
-		grid-template-columns: 2.75rem 3fr 3fr 5fr;
-		column-gap: 1.25rem;
-		align-items: baseline;
-		border-top: 1px solid var(--border);
-		padding: 1.75rem 0;
-		text-decoration: none;
-		color: inherit;
-	}
-
-	.work-list .work-row:last-child {
-		border-bottom: 1px solid var(--border);
-	}
-
-	.work-row:hover .work-title {
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
-
-	.work-row:focus-visible {
-		outline: 1px dashed var(--fg);
-		outline-offset: 4px;
-	}
-
-	.work-no {
-		font-variation-settings: "MONO" 1;
-		color: var(--muted);
-		font-size: 0.85rem;
-	}
-
-	.work-title {
-		font-size: 1.25rem;
-		font-variation-settings: "wght" 600;
-	}
-
-	.work-tag {
-		font-size: 0.78rem;
-		color: var(--accent);
-		font-variation-settings: "MONO" 1, "wght" 600;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-	}
-
-	.work-summary {
-		color: var(--muted);
-		font-size: 0.95rem;
-	}
-
-	/* Medium screens: number/title/tag stay on one line, summary wraps below */
-	@media (max-width: 940px) {
-		.work-row {
-			grid-template-columns: 2.75rem 1fr auto;
-		}
-
-		.work-tag {
-			grid-column: 3;
-			white-space: nowrap;
-			text-align: right;
-		}
-
-		.work-summary {
-			grid-column: 2 / 4;
-			margin-top: 0.5rem;
-		}
-	}
-
-	@media (max-width: 640px) {
-		.work-row {
-			grid-template-columns: 1fr;
-			row-gap: 0.4rem;
-		}
-
-		.work-tag {
-			grid-column: 1;
-			text-align: left;
-			white-space: normal;
-		}
-
-		.work-summary {
-			grid-column: 1;
-		}
-	}
-
-	.listing-list {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.listing-row {
-		display: grid;
-		grid-template-columns: 2.75rem 16rem 1fr 3.5rem;
-		column-gap: 1.25rem;
-		align-items: center;
-		border-top: 1px solid var(--border);
-		padding: 1.1rem 0;
-		text-decoration: none;
-		color: inherit;
-	}
-
-	.listing-row.no-year {
-		grid-template-columns: 2.75rem 16rem 1fr;
-	}
-
-	.listing-list .listing-row:last-child {
-		border-bottom: 1px solid var(--border);
-	}
-
-	.listing-row:hover .listing-name {
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
-
-	.listing-row:focus-visible {
-		outline: 1px dashed var(--fg);
-		outline-offset: 4px;
-	}
-
-	.listing-thumb {
-		position: relative;
-		display: block;
-		width: 2.75rem;
-		height: 2.75rem;
-	}
-
-	.listing-thumb > img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		display: block;
-	}
-
-	.listing-peek {
-		position: absolute;
-		left: calc(100% + 0.6rem);
-		bottom: calc(100% + 0.6rem);
-		width: 11rem;
-		height: 11rem;
-		border: 1px solid var(--fg);
-		background: var(--bg);
-		opacity: 0;
-		visibility: hidden;
-		transform: translateY(4px);
-		transition: opacity 0.15s ease, transform 0.15s ease;
-		z-index: 10;
-		pointer-events: none;
-	}
-
-	.listing-peek img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		display: block;
-	}
-
-	@media (hover: hover) and (pointer: fine) {
-		.listing-thumb:hover .listing-peek,
-		.listing-row:focus-visible .listing-peek {
-			opacity: 1;
-			visibility: visible;
-			transform: translateY(0);
-		}
-	}
-
-	.listing-name {
-		font-size: 0.95rem;
-		font-variation-settings: "wght" 600;
-	}
-
-	.listing-detail {
-		color: var(--muted);
-		font-size: 0.9rem;
-	}
-
-	.listing-year {
-		font-variation-settings: "MONO" 1;
-		color: var(--muted);
-		font-size: 0.85rem;
-		white-space: nowrap;
-		text-align: right;
-	}
-
-	@media (max-width: 640px) {
-		.listing-row,
-		.listing-row.no-year {
-			grid-template-columns: 1fr;
-			row-gap: 0.4rem;
-			padding: 1.5rem 0;
-		}
-
-		.listing-thumb {
-			margin-bottom: 0.25rem;
-		}
-
-		.listing-peek {
-			display: none;
-		}
-
-		.listing-year {
-			text-align: left;
-		}
-	}
-</style>

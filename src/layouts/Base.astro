@@ -1,4 +1,6 @@
 ---
+import "../styles/global.css";
+
 interface Props {
 	title?: string;
 	description?: string;
@@ -16,7 +18,7 @@ const canonical = new URL(Astro.url.pathname, site);
 const ogImage = new URL(image, site);
 ---
 
-<html lang="en">
+<html lang="en" class="bg-bg text-fg">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -43,179 +45,30 @@ const ogImage = new URL(image, site);
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImage} />
 		<title>{title}</title>
-		<style is:global>
-			@font-face {
-				font-family: "Recursive";
-				font-style: normal;
-				font-weight: 300 1000;
-				font-display: swap;
-				src: url("/fonts/recursive-latin.woff2") format("woff2");
-			}
-
-			:root {
-				--bg: #ffffff;
-				--fg: #111214;
-				--muted: #5b6270;
-				--border: #e2e4e8;
-				--accent: #3549d6;
-			}
-
-			:root[data-theme="dark"] {
-				--bg: #111214;
-				--fg: #f2f2f2;
-				--muted: #9096a0;
-				--border: #2a2c30;
-				--accent: #7c93ff;
-			}
-
-			@media (prefers-color-scheme: dark) {
-				:root:not([data-theme="light"]) {
-					--bg: #111214;
-					--fg: #f2f2f2;
-					--muted: #9096a0;
-					--border: #2a2c30;
-					--accent: #7c93ff;
-				}
-			}
-
-			* {
-				box-sizing: border-box;
-			}
-
-			html,
-			body {
-				margin: 0;
-				background: var(--bg);
-				color: var(--fg);
-			}
-
-			body {
-				font-family: "Recursive", ui-sans-serif, system-ui, sans-serif;
-				font-variation-settings: "wght" 380, "MONO" 0, "CASL" 0;
-				font-size: 16px;
-				line-height: 1.55;
-				max-width: 76rem;
-				margin: 0 auto;
-				padding: 2.5rem 2rem 6rem;
-			}
-
-			a {
-				color: inherit;
-				text-decoration: underline;
-				text-underline-offset: 2px;
-			}
-
-			.topbar {
-				display: flex;
-				justify-content: space-between;
-				align-items: baseline;
-				border-bottom: 1px solid var(--border);
-				padding-bottom: 1.25rem;
-				margin-bottom: 4.5rem;
-				font-size: 0.85rem;
-			}
-
-			.topbar-name {
-				font-variation-settings: "wght" 700;
-			}
-
-			.topbar a {
-				text-decoration: none;
-			}
-
-			.theme-links button {
-				font: inherit;
-				background: none;
-				border: none;
-				color: inherit;
-				cursor: pointer;
-				padding: 0;
-			}
-
-			.theme-links .sep {
-				margin: 0 0.35rem;
-				color: var(--muted);
-			}
-
-			.theme-links button {
-				color: var(--muted);
-			}
-
-			.theme-links button[aria-current="true"] {
-				color: var(--fg);
-				font-variation-settings: "wght" 600;
-			}
-
-			.label {
-				font-size: 0.8rem;
-				text-transform: uppercase;
-				letter-spacing: 0.06em;
-				font-variation-settings: "wght" 600, "MONO" 1;
-			}
-
-			.section {
-				border-top: 1px solid var(--border);
-				padding-top: 2.75rem;
-				margin-bottom: 5.5rem;
-			}
-
-			:root {
-				--row-indent: 4rem;
-			}
-
-			.section-intro {
-				max-width: clamp(38rem, 80vw, 52rem);
-				margin-bottom: 2.75rem;
-				padding-left: var(--row-indent);
-			}
-
-			.section-intro .label {
-				display: block;
-				margin-bottom: 1.1rem;
-			}
-
-			.section-intro p {
-				font-size: 1rem;
-				line-height: 1.4;
-				margin: 0;
-			}
-
-			@media (max-width: 640px) {
-				.section-intro {
-					padding-left: 0;
-				}
-			}
-
-			footer {
-				border-top: 1px solid var(--border);
-				padding-top: 1rem;
-				margin-top: 4rem;
-				font-size: 0.8rem;
-				color: var(--muted);
-				display: flex;
-				justify-content: space-between;
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				* {
-					transition: none !important;
-				}
-			}
-		</style>
 	</head>
-	<body>
-		<div class="topbar">
-			<a class="topbar-name" href="/">Fraser Page</a>
-			<span class="theme-links" id="theme-links">
-				<button type="button" data-theme-choice="light" aria-current="false">Light</button>
-				<span class="sep">/</span>
-				<button type="button" data-theme-choice="dark" aria-current="false">Dark</button>
+	<body class="mx-auto max-w-[76rem] bg-bg px-8 pt-10 pb-24 font-sans text-base leading-[1.55] text-fg fv-body">
+		<div class="mb-18 flex items-baseline justify-between border-b border-border pb-5 text-[0.85rem]">
+			<a class="fv-700 no-underline" href="/">Fraser Page</a>
+			<span id="theme-links">
+				<button
+					type="button"
+					data-theme-choice="light"
+					aria-current="false"
+					class="cursor-pointer text-muted aria-[current=true]:text-fg aria-[current=true]:fv-600"
+				>Light</button>
+				<span class="mx-[0.35rem] text-muted">/</span>
+				<button
+					type="button"
+					data-theme-choice="dark"
+					aria-current="false"
+					class="cursor-pointer text-muted aria-[current=true]:text-fg aria-[current=true]:fv-600"
+				>Dark</button>
 			</span>
 		</div>
 
 		<slot />
 
-		<footer>
+		<footer class="mt-16 flex justify-between border-t border-border pt-4 text-[0.8rem] text-muted">
 			<span>Toronto, Canada (Remote)</span>
 			<span>Built by Fraser Page</span>
 		</footer>
