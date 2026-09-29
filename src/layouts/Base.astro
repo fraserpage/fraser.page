@@ -58,9 +58,9 @@ const ogImage = new URL(image, site);
 		<meta name="twitter:image" content={ogImage} />
 		<title>{title}</title>
 	</head>
-	<body class="mx-auto max-w-[76rem] bg-bg px-8 pt-10 pb-24 font-sans text-base leading-[1.55] text-fg fv-body">
-		<div class="mb-18 flex items-center justify-between border-b border-border pb-5 text-[0.85rem]">
-			<a class="flex items-center gap-[0.5rem] fv-700 no-underline" href="/">
+	<body class="mx-auto max-w-page bg-bg px-8 pt-10 pb-24 font-sans text-base leading-body text-fg fv-body">
+		<div class="mb-18 flex items-center justify-between border-b border-border pb-5 text-meta">
+			<a class="flex items-center gap-2 fv-700 no-underline" href="/">
 				{headerAvatar && (
 					<img
 						class="size-6 shrink-0 rounded-full object-cover"
@@ -76,20 +76,20 @@ const ogImage = new URL(image, site);
 				<button
 					type="button"
 					data-theme-choice="light"
-					class="cursor-pointer text-muted aria-[current=true]:text-fg aria-[current=true]:fv-600"
+					class="cursor-pointer text-muted current:text-fg current:fv-600"
 				>Light</button>
-				<span class="mx-[0.35rem] text-muted">/</span>
+				<span class="mx-1.4 text-muted">/</span>
 				<button
 					type="button"
 					data-theme-choice="dark"
-					class="cursor-pointer text-muted aria-[current=true]:text-fg aria-[current=true]:fv-600"
+					class="cursor-pointer text-muted current:text-fg current:fv-600"
 				>Dark</button>
 			</span>
 		</div>
 
 		<slot />
 
-		<footer class="mt-16 flex justify-between border-t border-border pt-4 text-[0.8rem] text-muted">
+		<footer class="mt-16 flex justify-between border-t border-border pt-4 text-label text-muted">
 			<span>Toronto, Canada (Remote)</span>
 			<span>Built by Fraser Page</span>
 		</footer>

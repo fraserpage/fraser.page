@@ -23,24 +23,24 @@ const { study, prev, next } = Astro.props;
 	description={study.summary}
 	headerAvatar
 >
-	<nav class="mb-12 flex items-center gap-[0.6rem] text-[0.8rem]">
+	<nav class="mb-12 flex items-center gap-2.4 text-label">
 		<a class="text-muted no-underline hover:text-fg" href="/"
 			>&larr; Back to Home</a
 		>
 		<span class="text-border">/</span>
-		<details class="group relative open:[&>summary]:after:rotate-180">
+		<details class="group relative">
 			<summary
-				class="flex cursor-pointer list-none items-center gap-[0.4rem] tracking-[0.04em] text-accent uppercase fv-mono-600 after:size-0 after:border-x-4 after:border-t-[5px] after:border-x-transparent after:border-t-current after:transition-transform after:duration-150 after:ease-[cubic-bezier(0.25,0.1,0.25,1)] after:content-[''] [&::-webkit-details-marker]:hidden"
+				class="flex cursor-pointer list-none items-center gap-1.6 tracking-tag text-accent uppercase fv-mono-600 after:size-0 after:border-x-4 after:border-t-5 after:border-x-transparent after:border-t-current after:transition-transform after:duration-150 after:ease-standard group-open:after:rotate-180 details-marker:hidden"
 				>Case Studies</summary
 			>
 			<ul
-				class="absolute top-[calc(100%+0.6rem)] left-0 z-10 hidden min-w-60 border border-border bg-bg py-[0.35rem] group-open:block"
+				class="absolute top-flyout left-0 z-10 hidden min-w-60 border border-border bg-bg py-1.4 group-open:block"
 			>
 				{
 					caseStudies.map((cs) => (
 						<li>
 							<a
-								class="flex gap-[0.6rem] px-[0.9rem] py-2 text-[0.85rem] whitespace-nowrap text-fg no-underline hover:bg-border aria-[current=page]:text-accent aria-[current=page]:fv-600"
+								class="flex gap-2.4 px-3.6 py-2 text-meta whitespace-nowrap text-fg no-underline hover:bg-border current:text-accent current:fv-600"
 								href={`/case-studies/${cs.slug}/`}
 								aria-current={
 									cs.slug === study.slug ? "page" : undefined
@@ -56,25 +56,25 @@ const { study, prev, next } = Astro.props;
 		</details>
 	</nav>
 
-	<div class="mb-14 max-w-[42rem]">
+	<div class="mb-14 max-w-2xl">
 		<div
-			class="mb-[0.9rem] block text-[0.8rem] tracking-[0.06em] text-accent uppercase fv-mono-600"
+			class="mb-3.6 block text-label tracking-label text-accent uppercase fv-mono-600"
 		>
 			{study.no} &mdash; {study.tag}
 		</div>
 		<h1
-			class="m-0 text-[clamp(1.9rem,4vw,2.6rem)] tracking-[-0.01em] fv-600"
+			class="m-0 text-title tracking-heading fv-600"
 		>
 			{study.title}
 		</h1>
 	</div>
 
-	<div class="mb-16 max-w-[clamp(38rem,80vw,52rem)]">
+	<div class="mb-16 max-w-content">
 		{
 			study.blocks.map((block) => {
 				if (block.h) {
 					return (
-						<h3 class="mt-9 mb-[0.9rem] text-[0.78rem] tracking-[0.05em] text-muted uppercase fv-mono-600 first:mt-0">
+						<h3 class="mt-9 mb-3.6 text-eyebrow tracking-wider text-muted uppercase fv-mono-600 first:mt-0">
 							{block.h}
 						</h3>
 					);
@@ -82,7 +82,7 @@ const { study, prev, next } = Astro.props;
 				if (block.p) {
 					return (
 						<p
-							class="mb-[1.1rem] text-base leading-[1.7]"
+							class="mb-4.4 text-base leading-prose"
 							set:html={block.p}
 						/>
 					);
@@ -90,19 +90,23 @@ const { study, prev, next } = Astro.props;
 				if (block.note) {
 					return (
 						<aside class="my-7 mb-8 border border-border">
-							<header class="border-b border-border px-[0.9rem] py-[0.45rem] text-[0.78rem] tracking-[0.05em] text-muted uppercase fv-mono-600">
+							<header class="border-b border-border px-3.6 py-1.8 text-eyebrow tracking-wider text-muted uppercase fv-mono-600">
 								{block.note.title}
 							</header>
-							<p
-								class="m-0 px-[0.9rem] py-[0.85rem] text-base leading-[1.7]"
-								set:html={block.note.p}
-							/>
+							<div class="space-y-2.8 px-3.6 py-3.4">
+								{[block.note.p].flat().map((p) => (
+									<p
+										class="m-0 mb-4 text-base leading-prose"
+										set:html={p}
+									/>
+								))}
+							</div>
 						</aside>
 					);
 				}
 				if (block.visual === "tasks") {
 					return (
-						<figure class="visual-shot my-7 mb-8 max-w-[30rem]">
+						<figure class="visual-shot my-7 mb-8 max-w-shot">
 							<img
 								class="h-auto w-full border border-border"
 								src="/images/grace/student-tasks.png"
@@ -112,7 +116,7 @@ const { study, prev, next } = Astro.props;
 							/>
 							{block.caption && (
 								<figcaption
-									class="mt-[0.6rem] text-[0.8rem] leading-[1.6] text-muted"
+									class="mt-2.4 text-label leading-caption text-muted"
 									set:html={block.caption}
 								/>
 							)}
@@ -121,7 +125,7 @@ const { study, prev, next } = Astro.props;
 				}
 				if (block.visual === "notes") {
 					return (
-						<figure class="visual-shot my-7 mb-8 max-w-[30rem]">
+						<figure class="visual-shot my-7 mb-8 max-w-shot">
 							<video
 								class="block h-auto w-full cursor-pointer border border-border"
 								src="/images/grace/fill-fields-from-notes.mp4"
@@ -135,10 +139,10 @@ const { study, prev, next } = Astro.props;
 							/>
 							<button
 								type="button"
-								class="visual-shot-toggle mt-[0.55rem] inline-flex min-h-11 cursor-pointer items-center gap-[0.5rem] border border-border bg-bg px-[0.7rem] text-[0.75rem] tracking-[0.05em] text-muted uppercase fv-mono-600 transition-colors duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:border-fg hover:text-fg focus-dash focus-visible:text-fg [.is-paused_&]:border-accent [.is-paused_&]:text-accent"
+								class="visual-shot-toggle mt-2.2 inline-flex min-h-11 cursor-pointer items-center gap-2 border border-border bg-bg px-2.8 text-micro tracking-wider text-muted uppercase fv-mono-600 transition-colors duration-150 ease-standard hover:border-fg hover:text-fg focus-dash focus-visible:text-fg paused:border-accent paused:text-accent"
 							>
 								<svg
-									class="hidden size-[0.7rem] [.is-paused_&]:block"
+									class="hidden size-2.8 paused:block"
 									viewBox="0 0 12 12"
 									fill="currentColor"
 									aria-hidden="true"
@@ -146,7 +150,7 @@ const { study, prev, next } = Astro.props;
 									<path d="M2.5 0.75 10.25 6 2.5 11.25Z" />
 								</svg>
 								<svg
-									class="size-[0.7rem] [.is-paused_&]:hidden"
+									class="size-2.8 paused:hidden"
 									viewBox="0 0 12 12"
 									fill="currentColor"
 									aria-hidden="true"
@@ -157,7 +161,7 @@ const { study, prev, next } = Astro.props;
 							</button>
 							{block.caption && (
 								<figcaption
-									class="mt-[0.6rem] text-[0.8rem] leading-[1.6] text-muted"
+									class="mt-2.4 text-label leading-caption text-muted"
 									set:html={block.caption}
 								/>
 							)}
@@ -166,7 +170,7 @@ const { study, prev, next } = Astro.props;
 				}
 				if (block.visual === "sms") {
 					return (
-						<div class="my-7 mb-8 max-w-[34rem]">
+						<div class="my-7 mb-8 max-w-diagram">
 							<svg
 								class="h-auto w-full"
 								viewBox="0 0 480 200"
@@ -296,7 +300,7 @@ const { study, prev, next } = Astro.props;
 	</div>
 
 	<div
-		class="flex justify-between gap-6 border-t border-border pt-6 text-[0.85rem] max-[560px]:flex-col max-[560px]:gap-3"
+		class="flex justify-between gap-6 border-t border-border pt-6 text-meta max-xs:flex-col max-xs:gap-3"
 	>
 		<a class="text-muted no-underline" href={`/case-studies/${prev.slug}/`}
 			>&larr; {prev.no} &mdash; {prev.title}</a

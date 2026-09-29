@@ -3,7 +3,7 @@ export interface CaseStudyBlock {
   p?: string;
   visual?: "diff" | "notes" | "tasks" | "sms";
   caption?: string;
-  note?: { title: string; p: string };
+  note?: { title: string; p: string | string[] };
 }
 
 export interface CaseStudy {
@@ -25,7 +25,7 @@ export const caseStudies: CaseStudy[] = [
     blocks: [
       { h: "The system" },
       { p: "GRACE lets students make submissions to update their own data. Student submissions get stored as diffs on their own model, and merge to their target once an adviser approves the request." },
-      { p: "It's a simple framework with a fair bit of complexity in its implementation: open and rejected requests need distinct form states, requests to create records appear to students as actual records but with a pending-approval label, different endpoints for different data types, and so on." },
+      { p: "It's a simple framework (which I was architect of) with a fair bit of complexity in its implementation: open and rejected requests need distinct form states, requests to create records appear to students as actual records but with a pending-approval label, different endpoints for different data types, and so on." },
       { h: "The attempt" },
       { p: "Our initial AI tool design explained the submission workflow and handed over all of the student's data — existing records, submissions to change those records, the status of each submission, and a separate list of open requests to create new records. The thesis was: we're using a smart model, give it all the info and let it run." },
       { p: "Actual use showed consistent confusion on the model's part. It struggled to make sense of everything we had dumped on it, and to explain any of it succinctly to students. It would mix up the status of a submission with the status of a college application or say “some updates are pending” when the details of those updates were what the student needed to know. It mix up the id of a submission with the id of a record and create a new submission when the user intent was to edit an existing one. It would totally ignore create requests." },
@@ -43,6 +43,15 @@ export const caseStudies: CaseStudy[] = [
     tag: "Product Discovery",
     summary: "The three features I ended up building came out of research into user behavior.",
     blocks: [
+      // {
+      //   note: {
+      //     title: "TLDR",
+      //     p: [
+      //       "<strong>Your take away:</strong> I can take a question like “how do we improve this experience,“ dive into how users actually use a feature and propose and build out thoughtful solutions to address them and that extend and improve the code base along the way. And I can intelligently AI-ify an app: build custom agents with domain specific logic baked in, run model evaluations, etc. Oh, and I'm plugged into what's happening at the cutting edge.",
+      //       "<strong>Your take away from this take away:</strong> hire Fraser.",
+      //     ],
+      //   },
+      // },
       { h: "The brief" },
       { p: "This project came about after we had completed much of the extensive student-facing AI build-out. The question we asked in a client call was: “where can we integrate AI to make advisers' lives easier?” What evolved out of it was a “smart interaction” tool to assist advisers with their most common data-input task — logging an interaction every time they talk to a student." },
       { h: "Narrowing it down" },
@@ -56,7 +65,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         visual: "notes",
-        caption: "Don't worry, that's not a real student name. The client has justifiable anxiety about sending student data to OpenAI, so this tool never shares the student selected in the form, and it strips the student's name out of the notes field before that text reaches the LLM. (I built a more elaborate anonymization system for the student chatbot which gives the LLM placeholders it can use in order to address the student by name.) ",
+        caption: "Don't worry, that's not a real student name. Somewhat relatedly, the client has justifiable anxiety about sending student PII to OpenAI, so this tool never shares the student selected in the form, and it strips the student's name out of the notes field before that text reaches the LLM. (I built a more elaborate anonymization system for the student chatbot which gives the LLM placeholders it can use in order to address the student by name.) ",
       },
 
       { h: "Pitching more features based on my research" },
@@ -71,19 +80,22 @@ export const caseStudies: CaseStudy[] = [
     tag: "System Design",
     summary: "Designed from top to bottom: the data that defines a task, the filter language the app already spoke, and an engine cheap enough to run them all in one pass.",
     blocks: [
-      { h: "The gap" },
-      { p: "A new student portal needed a “tasks” concept to guide students through their journey — something to give them a sense of what to do next. Our designer did his best, but he was not a domain expert. The client, on the other hand, was, but lacked the systems thinking needed to put together a comprehensive list of student tasks. As a result, my first task when starting work on the feature was defining the tasks." },
+      { h: "The ask" },
+      { p: "A new student portal needed a “tasks” concept to guide students through their journey — something to give them a sense of what to do next." },
       { visual: "tasks" },
-      { h: "The reasoning" },
-      { p: "The app's whole job is collecting and tracking student data. A checklist that doesn't write back to that data would just be a second copy of it, waiting to drift out of sync. Talking this through with the dev team, we decided: each task is a read of the student's actual data: pending or complete depending on whether the underlying condition is met. Completing a task means updating that data." },
-      { p: "Even then, we weren't quite sure what the tasks should be. The designer had already tried, and so had the client. I looked at the data itself: each piece has an obvious flow, keyed on its status field. Those statuses translated into tasks." },
+      { h: "What is a task, anyway?" },
+      { p: "The app's whole job is collecting and tracking student data. A simple checklist looks like it fits the bill, but it doesn't guarantee anything about the data we care about. Talking this through with the dev team, we decided: each task is a read of the student's data and they should be marked pending or complete depending on a condition applied to that data. Completing a task means updating that data, which is what they exist to encourage." },
+      { p: "Even then, we weren't quite sure what the tasks should be. The designer had already tried, and so had the client. I looked at the student data we were constructing tasks from: scholarships, tests, applications and financial aid all had statuses. The simple answer: each status maps to a task." },
       { p: "Each task may have four conditions (when it appears, when it's complete, when it's dismissed, and when it expires) and one lifecycle the engine runs for all of them. Students don't tick tasks off. They update something like their application status, and the task reads as complete on the next pass." },
+      { h: "Hardcoded now, configurable later" },
+      { p: "The long-term plan was for admins to configure tasks in the app. The priority, though, was getting the student-facing side built, so v1 would ship with the tasks hardcoded (eighteen of them, each a small class). That left two problems. The hardcoded version couldn't paint us into a corner, and the conditions needed to be stored in a way we could build an admin UI over without creating a mountain of work." },
+      { p: "The first was an architecture problem. Each definition class has the same shape as the database row it will become, and the whole set sits behind a repository, so moving to the database means swapping one implementation. The test suite already runs against its own repository, so the engine is tested independently of the eighteen definitions." },
       { h: "Borrowing a language we already had" },
-      { p: "I reused GRACE's existing filter system for the conditions. Advisers already use it to build and save searches across student data, so a rule like “create this task for every application with a status of interested” is the same object the search UI produces when an adviser builds that filter by hand." },
-      { p: "The plan was: tasks will be an admin-facing configuration. But we wanted to get the student-facing side built first. So I shipped v1 with the definitions hardcoded (eighteen of them, each a small class). Those classes had to be the same shape as the rows they'd become. They sit behind a repository, so the whole set swaps by changing one implementation. And the test suite already runs against a different one, so we can test independently of the definition classes. When the definitions move into the database and get a config screen, that screen can be a UI over a filter language the app already uses and already stores." },
+      { p: "The second was harder. Status gave us the first list, but not every task keys on one. A survey task, for example, is complete when the student has responses linked to that survey. And we wanted admins to have real freedom over what a task can be, not a dropdown of statuses." },
+      { p: "So I reused GRACE's existing filter system for the conditions. Advisers already use it to build and save searches across student data, so a rule like “create this task for every application with a status of interested” is the same object the search UI produces when an adviser builds that filter by hand. When the definitions move into the database, the config screen can be a UI over a filter language the app already uses and already stores." },
       { h: "Making it cheap" },
-      { p: "A naive version of this would be a query disaster: eighteen definitions, four conditions each, run against every application, test and scholarship a student has, each one a database round trip." },
-      { p: "Before the engine runs, each task type declares the relations it needs, and those load in a single batch. I also gave the filter system a second way to execute. Alongside the path that compiles a filter into SQL, I added an in-memory path that evaluates the same filter object against data that's already loaded. After that first load, every condition check is free, so the engine costs the same whether it's running eighteen definitions or eighty." },
+      { p: "There was a catch. The filter system worked by compiling each filter into a live SQL query. Eighteen definitions, up to four conditions each, checked against every application, test and scholarship a student has: a classic N+1 problem, with a database round trip for every check." },
+      { p: "So before the engine runs, each task type declares the relations it needs, and those load in one batch. Then I gave the filter system a second way to execute. Alongside the SQL path, I added an in-memory path that evaluates the same filter object against data that's already loaded. After that first load, condition checks never touch the database, so the query count stays flat whether the engine is running eighteen definitions or eighty." },
     ],
   },
   {

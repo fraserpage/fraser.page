@@ -36,6 +36,52 @@
 
 @theme {
 	--font-sans: "Recursive", ui-sans-serif, system-ui, sans-serif;
+
+	--breakpoint-xs: 35rem;
+	--breakpoint-wide: 58.75rem;
+
+	--container-page: 76rem;
+	--container-intro: 46rem;
+	--container-content: clamp(38rem, 80vw, 52rem);
+	--container-diagram: 34rem;
+	--container-shot: 30rem;
+
+	--text-micro: 0.75rem;
+	--text-eyebrow: 0.78rem;
+	--text-label: 0.8rem;
+	--text-meta: 0.85rem;
+	--text-detail: 0.9rem;
+	--text-compact: 0.95rem;
+	--text-title: clamp(1.9rem, 4vw, 2.6rem);
+	--text-display: clamp(2.2rem, 5vw, 3.5rem);
+
+	--leading-display: 1.12;
+	--leading-intro: 1.4;
+	--leading-body: 1.55;
+	--leading-caption: 1.6;
+	--leading-prose: 1.7;
+
+	--tracking-heading: -0.01em;
+	--tracking-tag: 0.04em;
+	--tracking-label: 0.06em;
+
+	--spacing-1\.4: 0.35rem;
+	--spacing-1\.6: 0.4rem;
+	--spacing-1\.8: 0.45rem;
+	--spacing-2\.2: 0.55rem;
+	--spacing-2\.4: 0.6rem;
+	--spacing-2\.8: 0.7rem;
+	--spacing-3\.4: 0.85rem;
+	--spacing-3\.6: 0.9rem;
+	--spacing-4\.4: 1.1rem;
+	--spacing-flyout: calc(100% + 0.6rem);
+
+	--grid-template-columns-case: 2.75rem 1fr auto;
+	--grid-template-columns-case-wide: 2.75rem 3fr 3fr 5fr;
+	--grid-template-columns-heritage: 2.75rem 16rem 1fr 3.5rem;
+	--grid-template-columns-personal: 2.75rem 16rem 1fr;
+
+	--ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 @theme inline {
@@ -46,10 +92,29 @@
 	--color-accent: var(--accent);
 }
 
+@layer base {
+	strong,
+	b {
+		font-variation-settings: "wght" 600;
+	}
+}
+
 @custom-variant fine {
 	@media (hover: hover) and (pointer: fine) {
 		@slot;
 	}
+}
+
+@custom-variant current (&:is([aria-current="true"], [aria-current="page"]));
+
+@custom-variant paused (.is-paused &);
+
+@custom-variant details-marker (&::-webkit-details-marker);
+
+@utility transition-reveal {
+	transition-property: opacity, translate;
+	transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+	transition-duration: var(--tw-duration, var(--default-transition-duration));
 }
 
 @utility fv-body {
