@@ -60,7 +60,9 @@ export const caseStudies: CaseStudy[] = [
       {
         note: {
           title: "Note: September 2026",
-          p: "The AI dev community is all a-twitter about <a href='https://typesafe.ai/' target='_blank'>Jev</a>, a new model that is exactly right for this use case and plenty of others. Jev is crazy fast, plenty smart, and super cheap, but it can only send structured output —  it can't generate text, only choose from a fixed set of options. That's exactly what we have here. It would be the obvious choice, and that automated testing step would be unnecessary. (I can think of a few other places in the app that would be great candidates for a Jev-assisted feature too... e.g. quick filtering.)",
+          p: ["The AI dev community is all a-twitter about <a href='https://typesafe.ai/' target='_blank'>Jev</a>, a new model that is exactly right for this use case and plenty of others. Jev is crazy fast, plenty smart, and super cheap, but it can only send structured output —  it can't generate text, only choose from a fixed set of options. That's (almost) exactly what we have here. It would be the obvious choice, and that automated testing step would be unnecessary. (I can think of a few other places in the app that would be great candidates for a Jev-assisted feature too... e.g. quick filtering.)",
+            "Update: I tried it. The “almost” is that some form states need a scholarship or institution name, which is free text and has to go through the LLM so our entity resolver can match it against records in the system. We call Jev first: it fills in everything it can and decides whether the LLM is needed. When it isn't, we're done, about 10× faster than before. When it is, Jev kicks off a much smaller LLM call for just those one or two fields. That path is still 3–4× faster for a typical request, and about 2× faster on average.",
+          ]
         },
       },
       {
